@@ -1,10 +1,32 @@
 
 const style = {
-    mainBackground: '#ddd',
-    headerHeight: '50px',
-    headerBackground: '#00577f',
-    headerColor: '#FFF',
-    footerHeight: '50px'
+    
+    mainBackground: '#FFF',
+    mainColor: '#A3A3A5',
+    
+    primaryColor: '#343434',
+    secondaryColor: '#5E5E5E',
+
+    btnPrimaryColor: '#48AAF0',
+    btnPrimaryColorHover: '#1a93ec',
+    btnSecondaryColor: '#415C6E',
+    btnSecondaryColorHover: '#2f4351',
+    
+
+    activeColor: '#48AAF0',
+    
+    headerHeight: '165px',
+    headerBackground: '#FFF',
+    
+    contentPrimaryHeaderHeight: '400px',
+    contentSecondaryHeaderHeight: '100px',
+    
+    footerHeight: '50px',
+    footerBackground: 'transparent',
+    
+    shadow: '0 4px 30px rgba(135,135,135,.4)',
+    shadowHover: '0 0 0 rgba(135,135,135,1)'
+    
 }
 
 export default style;
