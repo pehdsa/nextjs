@@ -9,15 +9,14 @@ export default function Header(props) {
             <div className="container d-flex align-items-center">
             
                 <div className="logo">
-                    <img src="/static/img/logo.png" alt="Deborah Barros - Corretora de Imóvies" />
+                    <Link href="/"><a><img src="/static/img/logo.png" alt="Deborah Barros - Corretora de Imóvies" /></a></Link>
                 </div>
                 <div className="d-flex justify-content-end flex-grow-1">
                     <div>
                         
                         <nav className="text-right">
-                            <Link href="/"><a>HOME</a></Link>
-                            <Link href="/aluguel"><a>ALUGUEL</a></Link>
-                            <Link href="/venda"><a>VENDA</a></Link>
+                            <Link href="/"><a>HOME</a></Link>                            
+                            <Link href="/imoveis"><a>IMÓVEIS</a></Link>
                             <Link href="/banco-de-pedidos"><a>BANCO DE PEDIDOS</a></Link>
                             <Link href="/fale-conosco"><a>FALE CONSOCO</a></Link>
                         </nav>

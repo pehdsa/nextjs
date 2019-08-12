@@ -2,11 +2,14 @@ import Head from 'next/head'
 import Header from './Header'
 import Footer from './Footer'
 import styles from '../../styles/global'
+import NextProgressBar from 'nextjs-progressbar';
 
 const Content = (props) => {    
 
     return (
         <div className="root">
+            <NextProgressBar color={styles.btnPrimaryColor} startPosition={0.3} stopDelayMs={100} height={2} />
+
             <Head>                
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <meta charSet="utf-8" />
@@ -18,9 +21,9 @@ const Content = (props) => {
             
             <main>{props.children}</main>
             
-            <Footer />
+            <Footer dadosAnunciante={props.dadosAnunciante} />
             
-            <style jsx global>
+            <style jsx global> 
             {`
 
                 @import url('https://fonts.googleapis.com/css?family=Roboto:500,700&display=swap');
@@ -47,11 +50,15 @@ const Content = (props) => {
                     --content-primary-header-height: ${styles.contentPrimaryHeaderHeight}; 
                     --content-secondary-header-height: ${styles.contentSecondaryHeaderHeight};
                     
+                    --map-height: ${styles.mapHeight};
+                    
                     --footer-height: ${styles.footerHeight};
                     --footer-background: ${styles.footerBackground};
                     
                     --shadow: ${styles.shadow};
                     --shadow-hover: ${styles.shadowHover};
+
+                    --shadow-sm: ${styles.shadowSM};
 
                 }
 
@@ -148,7 +155,11 @@ const Content = (props) => {
                 .btn-secondary { background-color: var(--btn-secondary-color) !important;border-color: var(--btn-secondary-color) !important; }
                 .btn-secondary:hover { background-color: var(--btn-secondary-color-hover) !important;border-color: var(--btn-secondary-color-hover) !important; }
 
-                .shadow { box-shadow: ${styles.shadow} !important; }
+                .shadow { box-shadow: var(--shadow) !important; }
+                a.shadow { transition: box-shadow .3s ease; }
+                a.shadow:hover { box-shadow: var(--shadow-hover) !important; }
+
+                .shadow-sm { box-shadow: var(--shadow-sm) !important; }
 
                 img { display: block;width: 100%;height: auto; }
 
@@ -170,8 +181,8 @@ const Content = (props) => {
                 main {
                     position: relative;
                     min-height: 100vh;
-                    padding-top: ${styles.headerHeight};
-                    padding-bottom: calc(${styles.footerHeight} + 10px);
+                    padding-top: var(--header-height);
+                    padding-bottom: calc(var(--footer-height) + var(--map-height) + 10px);
                     z-index: 5;
                 }
 

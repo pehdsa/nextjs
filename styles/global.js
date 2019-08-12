@@ -21,11 +21,15 @@ const style = {
     contentPrimaryHeaderHeight: '400px',
     contentSecondaryHeaderHeight: '100px',
     
-    footerHeight: '50px',
+    mapHeight: '250px',
+
+    footerHeight: '255px',
     footerBackground: 'transparent',
     
     shadow: '0 4px 30px rgba(135,135,135,.4)',
-    shadowHover: '0 0 0 rgba(135,135,135,1)'
+    shadowHover: '0 4px 5px rgba(135,135,135,.6)',
+
+    shadowSM: '0 4px 10px rgba(135,135,135,.4)',
     
 }
 
