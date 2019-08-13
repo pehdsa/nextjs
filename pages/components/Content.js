@@ -147,8 +147,44 @@ const Content = (props) => {
                     border-bottom: 1px solid #DCDCDC;
                     display: block;
                     width: 100%;
-                }               
+                }  
+                .select > div:first-of-type {
+                    border: 0 !important;
+                    border-bottom: 1px solid #DCDCDC !important;
+                    border-radius: 0;
+                    box-shadow: none !important; 
+                    font-size:.875rem !important;
+                    color: #5f5f5f !important;
+                }  
+                .select.filtro { width: 200px; }     
+                .select .css-1okebmr-indicatorSeparator { display: none; }
+                .select .css-1hwfws3 { padding-left: 0; } 
+                .select .css-1wa3eu0-placeholder { color: #5f5f5f !important; }
+                input {
+                    -webkit-appearance: none;
+	                -moz-appearance: none;
+                    appearance: none;
+                    padding: .575rem 0;
+                    border: 0;
+                    border-bottom: 1px solid #DCDCDC;
+                    display: block;
+                    width: 100%;
+                }  
+                textarea {
+                    -webkit-appearance: none;
+	                -moz-appearance: none;
+                    appearance: none;
+                    padding: .575rem 0;
+                    border: 0;
+                    border-bottom: 1px solid #DCDCDC;
+                    display: block;
+                    width: 100%;
+                    height: 100px;
+                }           
                 
+                .is-invalid { border-color: #dc3545;padding-right: calc(1.5em + .75rem);background-image: url(data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23dc354…%3e%3ccircle cy='3' r='.5'/%3e%3ccircle cx='3' cy='3' r='.5'/%3e%3c/svg%3E) !important;background-repeat: no-repeat;background-position: center right calc(.375em + .1875rem);background-size: calc(.75em + .375rem) calc(.75em + .375rem); }
+                .is-invalid::placeholder { color: #dc3545 !important; }
+
                 .btn { border-radius: 3px !important; }
                 .btn-primary { background-color: var(--btn-primary-color) !important;border-color: var(--btn-primary-color) !important; }
                 .btn-primary:hover { background-color: var(--btn-primary-color-hover) !important;border-color: var(--btn-primary-color-hover) !important; }
@@ -170,6 +206,8 @@ const Content = (props) => {
                     -ms-flex-positive: 2!important;
                     flex-grow: 2!important;
                 }
+
+                @import url('/static/css/range.css');
 
             `}
             </style>

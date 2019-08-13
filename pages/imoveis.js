@@ -1,30 +1,60 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head'
 import Link from "next/link";
+import { useRouter } from 'next/router';
 import Content from './components/Content';
 import ContentHeade from './components/ContentHeader';
+import Select from 'react-select';
 
 import { getApiData, urlImgs, moneyFormatter } from '../utils/utils';
 
 const Imoveis = (props) => {    
-
-    const [ filtro, setFiltro ] = useState('filtro');
     
-    useEffect(() => {        
-        console.log(filtro);        
-    }, [filtro]); 
+    const [ listaImoveis, setImoveis ] = useState(props.imoveis);
+    const [ filtro, setFiltro ] = useState('');  
 
-    const [ imoveis, setImoveis ] = useState(props.imoveis);
-    useEffect(() => {
-        console.log(filtro);        
-    }, [imoveis]); 
+    /* ?id=5454
+    const router = useRouter();
+    const { id } = router.query;
+    console.log(id);
+    */
 
+   const filtros = [                
+        { value: 'default', label: 'FILTRAR' },
+        { value: 'recentes', label: 'Recentes' },
+        { value: 'relevância', label: 'Relevância' },
+        { value: 'menorvalor', label: 'Menor Valor' },
+        { value: 'maiorvalor', label: 'Maior Valor' },
+    ];
 
-    function handleFilter(valor) {
-        console.log(valor);
-        //setFiltro(valor)
-    }
-
+    useEffect(() => {  
+        
+        if (filtro) {
+            
+            if (filtro === 'recentes') {            
+                const imoveisFiltrado = props.imoveis.sort((anterior, atual) => atual.data - anterior.data);                                            
+                setImoveis([ ...imoveisFiltrado ]);
+            }
+            else if (filtro === 'relevância') {
+                const imoveisFiltrado = listaImoveis.sort((anterior, atual) => atual.relevancia - anterior.relevancia);                
+                setImoveis([ ...imoveisFiltrado ]);
+            }
+            else if (filtro === 'menorvalor') {
+                const imoveisFiltrado = listaImoveis.sort((anterior, atual) =>  anterior.valor - atual.valor);                
+                setImoveis([ ...imoveisFiltrado ]);
+            }
+            else if (filtro === 'maiorvalor') {
+                const imoveisFiltrado = listaImoveis.sort((anterior, atual) =>  atual.valor - anterior.valor);                
+                setImoveis([ ...imoveisFiltrado ]);
+            }    
+            else if (filtro === 'default') {                
+                setImoveis([ ...props.imoveis ]);
+            }                               
+                        
+        }         
+             
+    },[filtro]);
+    
     return (
         <div>
             <Content dadosAnunciante={props.dadosAnunciante} telefones={props.telefones}>
@@ -35,25 +65,21 @@ const Imoveis = (props) => {
                 <ContentHeade title="Imóveis" />
 
                 <div className="container">
-                    
-                    { imoveis.length > 0 ? (
+
+                    {listaImoveis.length > 0 ? (
                         <>
                         <header className="topo-lista d-flex justify-content-between align-items-center pt-5">
                             <div className="font-18 qtde pr-5">
-                                <b className="pr-2">{ imoveis.length > 1 ? `${imoveis.length} imóveis` : `${imoveis.length} imóvel` }</b>
+                                <b className="pr-2">{ listaImoveis.length > 1 ? `${listaImoveis.length} imóveis` : `${listaImoveis.length} imóvel` }</b>
                             </div>
-                            <div>
-                                <select onChange={e => handleFilter(e)} data-teste={filtro} className="font-14 color-5f5 filtro">
-                                    <option>FILTRAR</option>
-                                    <option value="valor1">Opção 1</option>
-                                    <option value="valor2">Opção 2</option>
-                                </select>
+                            <div>  
+                                <Select className="select filtro" onChange={(e) => setFiltro(e.value)} name="" placeholder="FILTRAR" options={filtros} />                                
                             </div>
                         </header>
 
                         <div className="row pt-2 pb-5">
                             
-                            { imoveis.map(imovel => {
+                            { listaImoveis.map(imovel => {
                                 return (
                                     <div key={imovel.id} className="col-3 py-4">
                                         <Link href="/">
@@ -95,7 +121,9 @@ const Imoveis = (props) => {
                         </>                     
                     ) : (
                         <div className="text-center py-5 my-5 font-32 opacity-50">Nenhum imóvel cadastrado</div>                        
-                    ) }
+                    )}
+                    
+
                 </div>
                 
                 <style jsx>

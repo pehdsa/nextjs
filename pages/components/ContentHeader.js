@@ -1,11 +1,33 @@
 import React, { useState } from 'react';
 import InputRange from 'react-input-range';
+import Select from 'react-select';
 
 import { moneyFormatter } from '../../utils/utils';
 
 export default props => {
     
     const [value, setValue] = useState({min: 2, max: 10});   
+
+    const finalidade = [        
+        { value: 'comprar', label: 'Comprar' },
+        { value: 'alugar', label: 'Alugar' }
+    ];
+    const tipoImovel = [        
+        { value: 'opcao1', label: 'Opção 1' },
+        { value: 'opcao2', label: 'Opção 2' }
+    ];
+    const uf = [        
+        { value: 'opcao1', label: 'Opção 1' },
+        { value: 'opcao2', label: 'Opção 2' }
+    ];
+    const cidade = [        
+        { value: 'opcao1', label: 'Opção 1' },
+        { value: 'opcao2', label: 'Opção 2' }
+    ];
+    const bairro = [        
+        { value: 'opcao1', label: 'Opção 1' },
+        { value: 'opcao2', label: 'Opção 2' }
+    ];
 
     return (
         
@@ -25,43 +47,23 @@ export default props => {
                                 <div className="row">
                                     
                                     <div className="col-12 pb-2 mb-1">
-                                        <select className="font-14 color-5f5">
-                                            <option>FINALIDADE</option>
-                                            <option>Comprar</option>
-                                            <option>Alugar</option>
-                                        </select>
+                                        <Select className="select" name="" placeholder="FINALIDADE" options={finalidade} />
                                     </div>
 
                                     <div className="col-12 pb-2 mb-1">
-                                        <select className="font-14 color-5f5">
-                                            <option>TIPO DO IMÓVEL</option>
-                                            <option>Opção 1</option>
-                                            <option>Opção 2</option>
-                                        </select>
+                                        <Select className="select" name="" placeholder="TIPO DO IMÓVEL" options={tipoImovel} />
                                     </div>
 
                                     <div className="col-4 pb-2 mb-1 pr-md-0">
-                                        <select className="font-14 color-5f5">
-                                            <option>UF</option>
-                                            <option>Opção 1</option>
-                                            <option>Opção 2</option>
-                                        </select>
+                                        <Select className="select" name="" placeholder="UF" options={uf} />
                                     </div>
 
                                     <div className="col-8 pb-2 mb-1 pl-md-0">
-                                        <select className="font-14 color-5f5">
-                                            <option>CIDADE</option>
-                                            <option>Opção 1</option>
-                                            <option>Opção 2</option>
-                                        </select>
+                                        <Select className="select" name="" placeholder="CIDADE" options={cidade} />
                                     </div>
 
                                     <div className="col-12 pb-2 mb-1">
-                                        <select className="font-14 color-5f5">
-                                            <option>BAIRRO</option>
-                                            <option>Opção 1</option>
-                                            <option>Opção 2</option>
-                                        </select>
+                                        <Select className="select" name="" placeholder="BAIRRO" options={bairro} />                                        
                                     </div>
 
                                     <div className="col-12 pb-2 mb-1">
@@ -76,7 +78,7 @@ export default props => {
                                 </div>
                             </div>
                             
-                            <button className="btn btn-primary font-14 w-100 py-3">BUSCAR AGORA (254)</button>                            
+                            <button className="btn btn-primary font-14 w-100 py-3">BUSCAR AGORA</button>                            
 
                         </form>
                     </div>
@@ -124,9 +126,8 @@ export default props => {
                         height: 460px;                        
                         transform: translate(0,110px);
                         padding: 30px 35px;
-                    }  
+                    }                     
                     
-                    @import url('/static/css/range.css');
 
                 `}
             </style>
