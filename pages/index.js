@@ -4,7 +4,7 @@ import Link from "next/link";
 import Content from './components/Content';
 import ContentHeade from './components/ContentHeader';
 
-import { getApiData, urlImgs, moneyFormatter } from '../utils/utils';
+import { getApiData, urlImgs, moneyFormatter, titleSite } from '../utils/utils';
 
 const Home = (props) => {      
 
@@ -12,7 +12,8 @@ const Home = (props) => {
         <div>
             <Content dadosAnunciante={props.dadosAnunciante} telefones={props.telefones}>
                 <Head>   
-                    <meta name="metas-home" />                             
+                    <meta name="metas-home" />     
+                    <title>{ titleSite }</title>
                 </Head>
                 
                 <h1 className="esconde">Página Iniciaal</h1>
@@ -29,7 +30,7 @@ const Home = (props) => {
                         { props.destaques.map(dest => (
                             
                             <div key={dest.id} className="col-3">
-                                <Link href="/">
+                                <Link href={`/imovel?id=${dest.id}`}>
                                     <a className="d-flex flex-column shadow h-100 item-destaque">
                                         <div><img src={`${urlImgs}/${dest.imagem}`} alt={dest.tipo} /></div>
                                         <div className="d-flex flex-grow-1 flex-column bg-white px-3 py-3">

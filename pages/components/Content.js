@@ -3,6 +3,9 @@ import Header from './Header'
 import Footer from './Footer'
 import styles from '../../styles/global'
 import NextProgressBar from 'nextjs-progressbar';
+import { ToastContainer } from 'react-toastify';
+
+import { titleSite } from '../../utils/utils';
 
 const Content = (props) => {    
 
@@ -12,9 +15,9 @@ const Content = (props) => {
 
             <Head>                
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
-                <meta charSet="utf-8" />
-                <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossOrigin="anonymous"></link>
-                <title>Deborah Barros - Corretora de Imóvies</title>
+                <meta charSet="utf-8" />                
+                <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossOrigin="anonymous"></link>                
+                <meta property="og:site_name" content={titleSite} />
             </Head>
             
             <Header dadosAnunciante={props.dadosAnunciante} telefones={props.telefones} />            
@@ -22,6 +25,8 @@ const Content = (props) => {
             <main>{props.children}</main>
             
             <Footer dadosAnunciante={props.dadosAnunciante} />
+
+            <ToastContainer />
             
             <style jsx global> 
             {`
@@ -129,6 +134,7 @@ const Content = (props) => {
 
                 .color-primary { color: var(--primary-color) !important; }
                 .color-secondary { color: var(--secondary-color) !important; }
+                .color-active { color: var(--active-color) !important; }
                 .color-181 { color: #181818 !important; }
                 .color-5f5 { color: #5f5f5f !important; }
 
@@ -199,6 +205,7 @@ const Content = (props) => {
 
                 img { display: block;width: 100%;height: auto; }
 
+                .opacity-75 { opacity: .75 }
                 .opacity-50 { opacity: .5 }
                 .opacity-25 { opacity: .25 }
 
@@ -208,6 +215,7 @@ const Content = (props) => {
                 }
 
                 @import url('/static/css/range.css');
+                @import url('/static/css/toastify.css');
 
             `}
             </style>

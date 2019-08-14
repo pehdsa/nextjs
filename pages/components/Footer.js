@@ -60,8 +60,8 @@ export default function Footer(props) {
 
                 .redes-sociais a { display: inline-block;width: 20px;height: 20px;text-indent: -9999px;background-size: cover !important; }
                 .redes-sociais a:hover { opacity: 0.8; }
-                .redes-sociais a.instagram { background: url(/static/img/instagram.svg) no-repeat center center; }
-                .redes-sociais a.facebook { background: url(/static/img/facebook.svg) no-repeat center center; }
+                .redes-sociais a.instagram { background: url(/static/img/instagram-footer.svg) no-repeat center center; }
+                .redes-sociais a.facebook { background: url(/static/img/facebook-footer.svg) no-repeat center center; }
 
             `}
             </style>

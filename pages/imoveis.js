@@ -6,7 +6,7 @@ import Content from './components/Content';
 import ContentHeade from './components/ContentHeader';
 import Select from 'react-select';
 
-import { getApiData, urlImgs, moneyFormatter } from '../utils/utils';
+import { getApiData, urlImgs, moneyFormatter, titleSite } from '../utils/utils';
 
 const Imoveis = (props) => {    
     
@@ -59,7 +59,8 @@ const Imoveis = (props) => {
         <div>
             <Content dadosAnunciante={props.dadosAnunciante} telefones={props.telefones}>
                 <Head>   
-                    <meta name="metas-contato" />                             
+                    <meta name="metas-contato" />  
+                    <title>Imóveis | { titleSite }</title>
                 </Head>
                 
                 <ContentHeade title="Imóveis" />
@@ -82,7 +83,7 @@ const Imoveis = (props) => {
                             { listaImoveis.map(imovel => {
                                 return (
                                     <div key={imovel.id} className="col-3 py-4">
-                                        <Link href="/">
+                                        <Link href={`/imovel?id=${imovel.id}`}>
                                             <a className="d-flex flex-column shadow h-100 item-destaque">
                                                 <div>
                                                     { imovel.imagem ? <img src={`${urlImgs}/${imovel.imagem}`} alt={imovel.tipo} /> : <img src="static/img/sm-foto.jpg" alt={imovel.tipo} /> }

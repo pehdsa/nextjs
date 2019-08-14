@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Head from 'next/head'
 import Content from './components/Content';
 import ContentHeade from './components/ContentHeader';
 import NumberFormat from 'react-number-format';
 import Select from 'react-select';
-import InputRange from 'react-input-range';
 
-import { getApiData, moneyFormatter, apiId, existsOrError } from '../utils/utils';
+
+import { getApiData, existsOrError, IsEmail, isMobile, notify, titleSite } from '../utils/utils';
 
 const BancoPedidos = (props) => { 
 
@@ -24,57 +24,73 @@ const BancoPedidos = (props) => {
         { value: 'Fazenda', label: 'Fazenda' },
     ];
 
-    const [value, setValue] = useState({min: 2, max: 10});       
+    const [ loading, setLoading ] = useState(false);
 
-    const [ formulario, setFormulario ] = useState({});    
-
-    function handleValor(valor) {
-        setValue(valor);
-        setFormulario({ ...formulario, ...valor });
-    }
-
+    const [ formulario, setFormulario ] = useState({ nomecompleto: '',email: '',cidade: '',uf: '',telefone: '',bairroPedido: '',ufPedido: '',cidadePedido: '',finalidade: '',tipo: '',min: '',max: '',obs: '' });
+    
     function handleForm(valores) {
         setFormulario({ ...formulario, ...valores });
     }
 
-    const [ validate, setValidate ] = useState({
-        validateName: true,
-        validateEmail: true,
-        validateTel: true,
-        validateCity: true
-    });
-    
-    async function handleSubmit(email) {
-        
-        if (!formulario.nomecompleto || !formulario.email || formulario.cidade || formulario.telefone) {
+    const [ validate, setValidate ] = useState({ validateName: true,validateEmail: true,validateTel: true,validateCity: true,validateUf: true });
+
+    async function handleSubmit() {        
+
+        if (!existsOrError(formulario.nomecompleto) || !existsOrError(formulario.email) || !existsOrError(formulario.cidade) || !existsOrError(formulario.uf) || !existsOrError(formulario.telefone)) {
             
             const camposinvalidos = {
                 validateName: existsOrError(formulario.nomecompleto) ? true : false,
                 validateEmail: existsOrError(formulario.email) ? true : false,
                 validateCity: existsOrError(formulario.cidade) ? true : false, 
+                validateUf: existsOrError(formulario.uf) ? true : false,  
                 validateTel: existsOrError(formulario.telefone) ? true : false, 
             }
 
-            setValidate({...validate, ...camposinvalidos});
+            setValidate({...validate, ...camposinvalidos});   
             
-        } else {
-            setValidate({ validateName: true, validateEmail: true, validateTel: true, validateCity: true });            
+            notify('erro', 'Digite os campos obrigatórios'); 
+            
+        } else if (!IsEmail(formulario.email)) {
+            
+            setValidate({ validateName: true, validateEmail: false, validateTel: true, validateCity: true, validateUf: true });
 
-            console.log('oi');
+            notify('erro', 'Digite um e-mail válido');
+            
+        } else if (!isMobile(formulario.telefone)) {
 
-            const response = await getApiData('proposta','','','','',formulario);
+            setValidate({ validateName: true, validateEmail: true, validateTel: false, validateCity: true, validateUf: true });
 
-            console.log(response);
+            notify('erro', 'Digite um celular válido');
+
+        } else {            
+
+            setLoading(true); 
+
+            setValidate({ validateName: true, validateEmail: true, validateTel: true, validateCity: true, validateUf: true });
+
+            const response = await getApiData('bancodepedidos','','','','',formulario);
+
+            if (response.status == 'sucesso' ) {
+                notify('sucesso', 'Pedido enviado com sucesso');
+            } else {
+                notify('erro', 'Ocorreu um erro inesperado, tente novamente mais tarde');
+            }
+
+            setFormulario({ nomecompleto: '',email: '',cidade: '',uf: '',telefone: '',bairroPedido: '',ufPedido: '',cidadePedido: '',finalidade: '',tipo: '',min: '',max: '' })
+            setLoading(false);
+
         }
 
     }
+    
     
 
     return (
         <div>
             <Content dadosAnunciante={props.dadosAnunciante} telefones={props.telefones}>
                 <Head>   
-                    <meta name="metas-contato" />                             
+                    <meta name="metas-contato" /> 
+                    <title>Banco de Pedidos | { titleSite }</title>
                 </Head>
                 
                 <ContentHeade title="Banco de Pedidos" />
@@ -99,19 +115,19 @@ const BancoPedidos = (props) => {
                                         
                                         <div className="row mx-0">
                                             <div className="col-12 pb-2 mb-1 px-0">
-                                                <input type="text" className={ !validate.validateName ? 'is-invalid' : '' } placeholder="NOME COMPLETO" onKeyUp={(e) => handleForm({ nomecompleto: e.target.value })} />
+                                                <input type="text" className={ !validate.validateName ? 'is-invalid' : '' } placeholder="NOME COMPLETO" value={formulario.nomecompleto} onChange={(e) => handleForm({ nomecompleto: e.target.value })} />
                                             </div>
                                             <div className="col-12 px-0 pb-2 mb-1">
-                                                <input type="email" className={ !validate.validateEmail ? 'is-invalid' : '' } placeholder="E-MAIL" onKeyUp={(e) => handleForm({email: e.target.value})} />
+                                                <input type="email" className={ !validate.validateEmail ? 'is-invalid' : '' } placeholder="E-MAIL" value={formulario.email} onChange={(e) => handleForm({email: e.target.value})} />
                                             </div>
                                             <div className="col-10 px-0 pb-2 mb-1">
-                                                <input type="text" className={ !validate.validateCity ? 'is-invalid' : '' } placeholder="CIDADE" onKeyUp={(e) => handleForm({cidade: e.target.value})} />
+                                                <input type="text" className={ !validate.validateCity ? 'is-invalid' : '' } placeholder="CIDADE" value={formulario.cidade} onChange={(e) => handleForm({cidade: e.target.value})} />
                                             </div>
                                             <div className="col-2 px-0 pb-2 mb-1">                                            
-                                                <input type="text" placeholder="UF" maxLength="2" className="text-uppercase" onKeyUp={(e) => handleForm({uf: e.target.value})} />
+                                                <input type="text" placeholder="UF" maxLength="2" className={ !validate.validateUf ? 'is-invalid text-uppercase' : 'text-uppercase'} value={formulario.uf} onChange={(e) => handleForm({uf: e.target.value})} /> 
                                             </div>
                                             <div className="col-12 px-0 pb-2 mb-1">
-                                                <NumberFormat className={ !validate.validateTel ? 'is-invalid' : '' } placeholder="TELEFONE" format="(##) #####-####" mask="_" onKeyUp={(e) => handleForm({telefone: e.target.value})} />                                            
+                                                <NumberFormat className={ !validate.validateTel ? 'is-invalid' : '' } placeholder="CELULAR" format="(##) #####-####" mask="_" value={formulario.telefone} onChange={(e) => handleForm({telefone: e.target.value})} />
                                             </div>
                                         </div>
 
@@ -122,39 +138,46 @@ const BancoPedidos = (props) => {
                                         <div className="row mx-0">
                                             
                                             <div className="col-12 pb-2 mb-1 px-0">
-                                                <input type="text" placeholder="BAIRRO" onKeyUp={(e) => handleForm({bairroPedido: e.target.value})} />
+                                                <input type="text" placeholder="BAIRRO" value={formulario.bairroPedido} onChange={(e) => handleForm({bairroPedido: e.target.value})} />
                                             </div>
 
                                             <div className="col-2 pb-2 mb-1 px-0">
-                                                <input type="text" placeholder="UF" onKeyUp={(e) => handleForm({ufPedido: e.target.value})} />
+                                                <input type="text" placeholder="UF" className="text-uppercase" maxLength="2" value={formulario.ufPedido} onChange={(e) => handleForm({ufPedido: e.target.value})} />
                                             </div>
 
                                             <div className="col-10 pb-2 mb-1 px-0">
-                                                <input type="text" placeholder="CIDADE" onKeyUp={(e) => handleForm({cidadePedido: e.target.value})} />
+                                                <input type="text" placeholder="CIDADE" value={formulario.cidadePedido} onChange={(e) => handleForm({cidadePedido: e.target.value})} />
                                             </div>
 
                                             <div className="col-6 pb-2 mb-1 px-0">
-                                                <Select className="select" onChange={(e) => handleForm({ finalidade: e.value})} placeholder="FINALIDADE" options={options} />
+                                                <Select className="select" defaultValue={formulario.finalidade} onChange={(e) => handleForm({ finalidade: e.value})} placeholder="FINALIDADE" options={options} />
                                             </div>
 
                                             <div className="col-6 pb-2 mb-1 px-0">
-                                                <Select className="select" onChange={(e) => handleForm({ tipo: e.value})} placeholder="TIPO DO IMÓVEL" options={tipo} />
+                                                <Select className="select" defaultValue={formulario.tipo} onChange={(e) => handleForm({ tipo: e.value})} placeholder="TIPO DO IMÓVEL" options={tipo} />
+                                            </div>
+                                            
+                                            <div className="col-6 pb-2 mb-1 px-0">
+                                                <NumberFormat placeholder="VALOR MÍNIMO" thousandSeparator={true} prefix={'R$ '} value={formulario.min} onChange={(e) => handleForm({ min: e.target.value })} />
                                             </div>
 
-                                            <div className="col-12 pb-2 mb-1 px-0">                                                
-                                            <label className="d-block font-12 color-5f5 pb-2"><b>VALOR ENTRE R$ {moneyFormatter(value.min)} A R$ {moneyFormatter(value.max)}</b></label>
-                                                <InputRange maxValue={20} minValue={0} value={value} onChange={value => handleValor(value)} />                                    
-                                            </div> 
+                                            <div className="col-6 pb-2 mb-1 px-0">
+                                                <NumberFormat placeholder="VALOR MÁXIMO" thousandSeparator={true} prefix={'R$ '} value={formulario.max} onChange={(e) => handleForm({ max: e.target.value })} />
+                                            </div>
+                                            
 
                                         </div>
 
                                     </div>
                                     <div className="col-12 px-0">
-                                        <textarea placeholder="OBSERVAÇÕES" onKeyUp={(e) => handleForm({obs: e.target.value})}></textarea>
+                                        <textarea placeholder="OBSERVAÇÕES" value={formulario.obs} onChange={(e) => handleForm({obs: e.target.value})}></textarea>
                                     </div>
 
                                     <div className="col-12 pt-4 px-0 d-flex justify-content-end">
-                                        <button type="button" onClick={() => handleSubmit(apiId)} className="btn btn-primary font-14 py-2 px-5">ENVIAR</button>  
+                                        <button type="button" onClick={() => handleSubmit()} className="btn btn-primary font-14 py-2 px-5 shadow-sm" disabled={ loading ? true : false }>
+                                            { loading && <span className="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span> }
+                                            ENVIAR
+                                        </button>  
                                     </div>
 
                                 </div>
@@ -162,6 +185,8 @@ const BancoPedidos = (props) => {
                         </div>
 
                     </div>
+
+                    
 
                 </div>
 
