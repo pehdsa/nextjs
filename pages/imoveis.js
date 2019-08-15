@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head'
 import Link from "next/link";
-import { useRouter } from 'next/router';
 import Content from './components/Content';
 import ContentHeade from './components/ContentHeader';
 import Select from 'react-select';
@@ -11,13 +10,7 @@ import { getApiData, urlImgs, moneyFormatter, titleSite } from '../utils/utils';
 const Imoveis = (props) => {    
     
     const [ listaImoveis, setImoveis ] = useState(props.imoveis);
-    const [ filtro, setFiltro ] = useState('');  
-
-    /* ?id=5454
-    const router = useRouter();
-    const { id } = router.query;
-    console.log(id);
-    */
+    const [ filtro, setFiltro ] = useState('');      
 
    const filtros = [                
         { value: 'default', label: 'FILTRAR' },
@@ -160,6 +153,8 @@ const Imoveis = (props) => {
 
 Imoveis.getInitialProps = async () => {   
     
+    //getApiData('busca','','','','finalidade=2') //Aluguel
+    //getApiData('busca','','','','finalidade=2') //Venda
     const imoveis = await getApiData('busca');
     const dadosAnunciante = await getApiData('dadosanunciante');
     const telefones = await getApiData('telefonesanunciante');

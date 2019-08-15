@@ -166,6 +166,8 @@ const Content = (props) => {
                 .select .css-1okebmr-indicatorSeparator { display: none; }
                 .select .css-1hwfws3 { padding-left: 0; } 
                 .select .css-1wa3eu0-placeholder { color: #5f5f5f !important; }
+                .select .css-2613qy-menu div { font-size: .875rem !important }
+                
                 input {
                     -webkit-appearance: none;
 	                -moz-appearance: none;
@@ -213,8 +215,7 @@ const Content = (props) => {
                     -ms-flex-positive: 2!important;
                     flex-grow: 2!important;
                 }
-
-                @import url('/static/css/range.css');
+                
                 @import url('/static/css/toastify.css');
 
             `}

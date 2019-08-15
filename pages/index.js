@@ -2,7 +2,7 @@ import React from 'react';
 import Head from 'next/head'
 import Link from "next/link";
 import Content from './components/Content';
-import ContentHeade from './components/ContentHeader';
+import ContentHeader from './components/ContentHeaderMain';
 
 import { getApiData, urlImgs, moneyFormatter, titleSite } from '../utils/utils';
 
@@ -18,7 +18,7 @@ const Home = (props) => {
                 
                 <h1 className="esconde">Página Iniciaal</h1>
                 
-                <ContentHeade primary />
+                <ContentHeader primary infosBusca={props.infosBusca} />
 
                 <div className="container py-4">
                     <div className="pb-5">
@@ -74,7 +74,7 @@ const Home = (props) => {
                         { props.noticias.map(noti => (
                             <div key={noti.id} className="col-3">
 
-                                <Link href="/">
+                                <Link href={`/noticia?id=${noti.id}`}>
                                     <a className="d-flex flex-column shadow h-100 noticia-destaque">
                                         <div><img src={`${urlImgs}/${noti.imagem}`} alt={noti.titulo} /></div>
                                         <div className="d-flex flex-grow-1 flex-column bg-white px-3 py-3">                                            
@@ -130,8 +130,15 @@ Home.getInitialProps = async () => {
     const dadosAnunciante = await getApiData('dadosanunciante');
     const telefones = await getApiData('telefonesanunciante');
     const noticias = await getApiData('ultimasnoticias','','4');
+
+    const infosBusca = {
+        tipoImoveis: await getApiData('tipoimoveis')
+        ,estados: await getApiData('estados')
+        ,valoresAluguel: await getApiData('valores',1)
+        ,valoresVenda: await getApiData('valores',2)
+    }
     
-    return {destaques, dadosAnunciante, telefones, noticias}; 
+    return {destaques, dadosAnunciante, telefones, noticias, infosBusca}; 
     
 }
 

@@ -3,8 +3,8 @@ import 'isomorphic-fetch';
 import qs from 'qs';
 import { toast } from 'react-toastify';
 
-const apiId = "46";
-const apiKey = "28ea23df7550efae4710b0df99d39390";
+const apiId = "263";
+const apiKey = "e16494de14a287753ca6463541ce8b7d";
 const apiUrl = "https://www.infoimoveis.com.br/webservice/infows.php";
 const urlImgs = "https://static.infoimoveis.com.br"; 
 const urlSite = "http://localhost:3000"; 
@@ -43,8 +43,8 @@ const getApiData = async ( acao, registro="", resultados="", ordenacao="", busca
     
 }
 
-const moneyFormatter = (valor) => {    
-    return parseFloat(valor).toFixed(2).replace('.',',').replace(/(\d)(?=(\d{3})+\,)/g, '$1.')
+const moneyFormatter = (valor) => {        
+    return parseFloat(valor).toFixed(2).replace('.',',').replace(/(\d)(?=(\d{3})+\,)/g, '$1.')    
 }
 
 const existsOrError = (value) => {

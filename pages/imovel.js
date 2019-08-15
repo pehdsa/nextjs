@@ -159,9 +159,9 @@ const Imovel = (props) => {
                             
                             <div className="pb-4">
                                 <div className="redes-sociais d-flex">
-                                    <a href="https://www.facebook.com/infoimoveis/" className="facebook mx-0" target="_blank" rel="nofollow">Facebook</a>   
-                                    <a href="https://www.instagram.com/infoimoveis/" className="instagram mx-1" target="_blank" rel="nofollow">Instagram</a>
-                                    <a href="https://www.instagram.com/infoimoveis/" className="whatsapp mx-0" target="_blank" rel="nofollow">Whatsapp</a>
+                                    <a href={`https://www.facebook.com/sharer/sharer.php?u=${urlSite}/imovel?id=${imovel.id}`} className="facebook mx-0" target="_blank" rel="nofollow">Facebook</a>   
+                                    <a href={`https://twitter.com/intent/tweet?text=${urlSite}/imovel?id=${imovel.id}`} className="instagram mx-1" target="_blank" rel="nofollow">Instagram</a>
+                                    <a href={`https://wa.me/?text=${urlSite}/imovel?id=${imovel.id}`} className="whatsapp mx-0" target="_blank" rel="nofollow">Whatsapp</a>
                                 </div>
 
                                 <div className="text-uppercase font-12 opacity-25 color-primary">{ `${imovel.finalidade} - ${imovel.tipo}` }</div>
@@ -245,8 +245,9 @@ const Imovel = (props) => {
                     .visualizacao .endereco { position: relative;padding-left: 25px; }
                     .visualizacao .endereco img { position: absolute;top: 50%;left: 0;width: 15px;transform: translate(0px,-50%); } 
 
-                    .visualizacao .redes-sociais { position: absolute;top: 0;right: 0; }
-                    .visualizacao .redes-sociais a { display: block;width: 30px;height: 30px;background-size: cover !important;text-indent: -9999px; }
+                    .visualizacao .redes-sociais { position: absolute;top: 0;right: 0;z-index: 15; }
+                    .visualizacao .redes-sociais a { display: block;width: 30px;height: 30px;background-size: cover !important;text-indent: -9999px;opacity: .8;transition: opacity .2s ease }
+                    .visualizacao .redes-sociais a:hover { opacity: 1; }
                     .visualizacao .redes-sociais a.facebook { background: url(/static/img/facebook.svg) no-repeat center center; }
                     .visualizacao .redes-sociais a.instagram { background: url(/static/img/instagram.svg) no-repeat center center; }
                     .visualizacao .redes-sociais a.whatsapp { background: url(/static/img/whatsapp.svg) no-repeat center center; }
