@@ -11,8 +11,8 @@ import { getApiData, existsOrError, IsEmail, isMobile, notify, titleSite } from 
 const BancoPedidos = (props) => { 
 
     const options = [        
-        { value: 'comprar', label: 'Comprar' },
-        { value: 'alugar', label: 'Alugar' }
+        { value: 'comprar', label: 'Venda' },
+        { value: 'alugar', label: 'Aluguel' }
     ];    
     const tipo = [
         { value: 'Apartamento', label: 'Apartamento' },

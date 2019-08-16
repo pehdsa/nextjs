@@ -9,8 +9,9 @@ const apiUrl = "https://www.infoimoveis.com.br/webservice/infows.php";
 const urlImgs = "https://static.infoimoveis.com.br"; 
 const urlSite = "http://localhost:3000"; 
 const titleSite = "Deborah Barros - Corretora de Imóvies";
+const itensPorPagina = 12;
 
-const getApiData = async ( acao, registro="", resultados="", ordenacao="", busca="", dados="" ) => {
+const getApiData = async ( acao, registro="", resultados="", ordenacao="", busca="", dados="", pagina="" ) => {
     
     const dataDestaque = {
         acao,
@@ -19,6 +20,7 @@ const getApiData = async ( acao, registro="", resultados="", ordenacao="", busca
         ordenacao,
         busca,
         dados,
+        pagina,
         anunciante: apiId,
         chave: apiKey
     }
@@ -105,4 +107,4 @@ const isMobile = (celular) => {
     } 
 }
 
-export { apiUrl, apiKey, apiId, urlImgs, urlSite, getApiData, moneyFormatter, existsOrError, equalsOrError, IsEmail, isMobile, notify, titleSite }
+export { apiUrl, apiKey, apiId, urlImgs, urlSite, getApiData, moneyFormatter, existsOrError, equalsOrError, IsEmail, isMobile, notify, titleSite, itensPorPagina }

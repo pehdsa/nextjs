@@ -1,7 +1,5 @@
 import Link from './NavLink';
 
-//import Logo from '../../assets/logo.png';
-
 export default function Header(props) {    
 
     return (
@@ -16,7 +14,8 @@ export default function Header(props) {
                         
                         <nav className="text-right">
                             <Link href="/"><a>HOME</a></Link>                            
-                            <Link href="/imoveis"><a>IMÓVEIS</a></Link>
+                            <Link href="/aluguel"><a>ALUGUEL</a></Link>
+                            <Link href="/venda"><a>VENDA</a></Link>
                             <Link href="/banco-de-pedidos"><a>BANCO DE PEDIDOS</a></Link>
                             <Link href="/fale-conosco"><a>FALE CONSOCO</a></Link>
                         </nav>

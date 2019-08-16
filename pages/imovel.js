@@ -1,15 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Head from 'next/head'
 import Content from './components/Content';
 import ContentHeade from './components/ContentHeader';
 import ImageGallery from 'react-image-gallery';
 import NumberFormat from 'react-number-format';
+import Skeleton from './components/Skeleton';
 
 import { getApiData, urlImgs, urlSite, moneyFormatter, existsOrError, IsEmail, isMobile, notify, titleSite } from '../utils/utils';
 
 const Imovel = (props) => {    
     
+    const [ pageSkeleton, setPageSkeleton ] = useState(true);
     const [ imovel, setImovel ] = useState(props.imovel);    
+
+    const refImovel = useRef(true);
+    useEffect(() => {
+        if (refImovel.current) {
+            refImovel.current = false;
+            setTimeout(() => {setPageSkeleton(false)}, 800);
+            return;
+        }
+    },[imovel])
 
     let images;
     if ( imovel.imagens ) {
@@ -116,12 +127,17 @@ const Imovel = (props) => {
                 <ContentHeade title="Imóvel" />
 
                 <div className="container visualizacao">        
+                    
+                    <header className={`${ pageSkeleton ? 'd-flex ' : 'd-none '}justify-content-between align-items-center pt-5`}>
+                        <Skeleton width={280} height={24} />                    
+                    </header>
 
-
-                    <header className="topo-visualizacao d-flex justify-content-between align-items-center pt-5">
-                        <div className="font-16 titulo pr-5">
-                            <span className="pr-2">{ imovel.titulo }</span>
-                        </div>                        
+                    <header className={`${ pageSkeleton ? 'd-none ' : 'd-flex '}topo-visualizacao justify-content-between align-items-center pt-5`}>
+                        { imovel.titulo && (
+                            <div className="font-16 titulo pr-5">
+                                <span className="pr-2">{ imovel.titulo }</span>
+                            </div>                        
+                        ) }                        
                     </header>
 
                     <div className="row py-5">
@@ -130,21 +146,47 @@ const Imovel = (props) => {
                             { imovel.imagens ? <ImageGallery showFullscreenButton={false} items={images} /> : <div><img src="/static/img/sm-foto.jpg" /></div> }
 
                             { imovel.maisdescricao && (
-                                <div className="descricao pt-4">
+                                <>
+                                <div className={`${ pageSkeleton ? 'd-block ' : 'd-none '}pt-4`}>
+                                    <div>
+                                        <Skeleton width={`100%`} height={20} /> 
+                                        <Skeleton className="mt-2" width={`100%`} height={63} /> 
+                                    </div>
+                                </div>
+
+                                <div className={`${ pageSkeleton ? 'd-none ' : 'd-block '}descricao pt-4`}>
                                     <div className="d-flex border-bottom mb-3"><h2 className="font-14 border-bottom py-2 color-active mb-0">DESCRIÇÃO DO IMÓVEL</h2></div>
                                     <div className="font-14">{ imovel.maisdescricao }</div>
                                 </div>
+                                </>
                             )}
 
                             { imovel.observacoes && (
-                                <div className="descricao pt-4">
+                                <>
+                                <div className={`${ pageSkeleton ? 'd-block ' : 'd-none '}pt-4`}>
+                                    <div>
+                                        <Skeleton width={`100%`} height={20} /> 
+                                        <Skeleton className="mt-2" width={`100%`} height={63} /> 
+                                    </div>
+                                </div>
+
+                                <div className={`${ pageSkeleton ? 'd-none ' : 'd-block '}descricao pt-4`}>
                                     <div className="d-flex border-bottom mb-3"><h2 className="font-14 border-bottom py-2 color-active mb-0">OBSERVAÇÃO</h2></div>
                                     <div className="font-14">{ imovel.observacoes }</div>
                                 </div>
+                                </>
                             ) }
 
                             { imovel.infraestrutura && (
-                                <div className="descricao pt-4">
+                                <>
+                                <div className={`${ pageSkeleton ? 'd-block ' : 'd-none '}pt-4`}>
+                                    <div>
+                                        <Skeleton width={`100%`} height={20} /> 
+                                        <Skeleton className="mt-2" width={`100%`} height={63} /> 
+                                    </div>
+                                </div>
+
+                                <div className={`${ pageSkeleton ? 'd-none ' : 'd-block '}descricao pt-4`}>
                                     <div className="d-flex border-bottom mb-3"><h2 className="font-14 border-bottom py-2 color-active mb-0">TEM NAS PROXIMIDADES</h2></div>
                                     <div className="font-14">
                                         <ul>
@@ -152,6 +194,7 @@ const Imovel = (props) => {
                                         </ul>
                                     </div>
                                 </div>
+                                </>
                             ) }
 
                         </div>
@@ -164,32 +207,52 @@ const Imovel = (props) => {
                                     <a href={`https://wa.me/?text=${urlSite}/imovel?id=${imovel.id}`} className="whatsapp mx-0" target="_blank" rel="nofollow">Whatsapp</a>
                                 </div>
 
-                                <div className="text-uppercase font-12 opacity-25 color-primary">{ `${imovel.finalidade} - ${imovel.tipo}` }</div>
-                                <div className="font-32 color-primary"><b>{ `R$ ${moneyFormatter(imovel.valor)}` }</b></div>
-                                { imovel.valor_condominio && <div className="font-12 color-secondary">{ `Condomínio: R$ ${moneyFormatter(imovel.valor_condominio)}` }</div> }
-                                { imovel.valor_iptu && <div className="font-12 color-secondary">{ `IPTU: R$ ${moneyFormatter(imovel.valor_iptu)}` }</div> }
-                                { (imovel.areatotal && imovel.areaconstruida) && (
+                                <Skeleton className={`${ pageSkeleton ? 'd-block ' : 'd-none '}`} width={150} height={20} />
+                                <div className={`${ pageSkeleton ? 'd-none ' : 'd-block '}text-uppercase font-12 opacity-25 color-primary`}>{ `${imovel.finalidade} - ${imovel.tipo}` }</div>
+                                
+                                <Skeleton className={`${ pageSkeleton ? 'd-block ' : 'd-none '}my-2`} width={210} height={38} />
+                                <div className={`${ pageSkeleton ? 'd-none ' : 'd-block '}font-32 color-primary`}><b>{ imovel.valor ? `R$ ${moneyFormatter(imovel.valor)}` : 'SEM VALOR' }</b></div>
+                                
+                                { pageSkeleton &&  <Skeleton className={`my-2`} width={180} height={38} /> }
+                                
+                                { (imovel.valor_condominio && !pageSkeleton ) && <div className="font-12 color-secondary">{ `Condomínio: R$ ${moneyFormatter(imovel.valor_condominio)}` }</div> }
+                                { (imovel.valor_iptu && !pageSkeleton ) && <div className="font-12 color-secondary">IPTU: {imovel.valor_iptu}</div> }
+                                
+                                { (imovel.areatotal && imovel.areaconstruida && !pageSkeleton) && (
                                     <div className="font-12 color-secondary opacity-75 pt-2">
                                         Área Total: {imovel.areatotal} m<sup>2</sup> / Construída: {imovel.areaconstruida} m<sup>2</sup>                                        
                                     </div>  
                                 )}
+
                             </div>
 
-                            <div className="d-flex border-top border-bottom py-3">
+                            <div className={`${ pageSkeleton ? 'd-block ' : 'd-none '}border-top border-bottom py-3`}>
+                                <Skeleton  width={`100%`} height={37} />
+                            </div>
+
+                            <div className={`${ pageSkeleton ? 'd-none ' : 'd-flex '}border-top border-bottom py-3`}>
                                 <div className="endereco d-flex align-items-center flex-grow-1 pr-4 font-14 line-height-130">
                                     <img src="/static/img/place.svg" alt="" />
                                     {`${imovel.endereco} - ${imovel.bairro} | ${imovel.cidade}/${imovel.uf}`}
                                 </div>
                                 { (imovel.latitude && imovel.longitude) && <button type="button" onClick={() => handleClickMap()} className="btn btn-secondary shadow-sm w-50 text-white font-13 px-0 py-2 m-0"><b>VER NO MAPA</b></button> }
                             </div>
+                            
+                            { imovel.caracteristicas && (
+                                <>
+                                <div className={`${ pageSkeleton ? 'd-block ' : 'd-none '}pt-4`}> 
+                                    <Skeleton  width={`100%`} height={40} />
+                                </div>
 
-                            <div className="py-4 font-14"> 
-                                <ul>
-                                    { imovel.caracteristicas.map(item => <li>{item}</li> ) }
-                                </ul>
-                            </div>
+                                <div className={`${ pageSkeleton ? 'd-none ' : 'd-block '}pt-4 font-14`}> 
+                                    <ul>
+                                        { imovel.caracteristicas.map(item => <li>{item}</li> ) }
+                                    </ul>
+                                </div>
+                                </>
+                            ) }                            
 
-                            <div className="border p-5">
+                            <div className="border p-5 mt-4">
                                 <h2 className="font-24 m-0 p-0 color-primary">Entre em Contato</h2> 
                                 <p className="font-12 color-secondary opacity-75">Preencha o formulário abaixo</p>
                                 

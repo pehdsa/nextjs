@@ -27,7 +27,7 @@ const style = {
     footerBackground: 'transparent',
     
     shadow: '0 4px 30px rgba(135,135,135,.4)',
-    shadowHover: '0 4px 5px rgba(135,135,135,.6)',
+    shadowHover: '0 4px 5px rgba(135,135,135,.4)',
 
     shadowSM: '0 4px 10px rgba(135,135,135,.4)',
     

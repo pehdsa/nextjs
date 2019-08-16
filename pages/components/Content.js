@@ -83,6 +83,7 @@ const Content = (props) => {
                     color: var(--main-color);
                     -webkit-font-smoothing: antialiased !important;
                     overflow-y: scroll;
+                    overflow-x: hidden;
                 }
                 
                 .esconde { position: fixed;top: -9999px;left:0;text-ident: -99999px; }
@@ -166,7 +167,8 @@ const Content = (props) => {
                 .select .css-1okebmr-indicatorSeparator { display: none; }
                 .select .css-1hwfws3 { padding-left: 0; } 
                 .select .css-1wa3eu0-placeholder { color: #5f5f5f !important; }
-                .select .css-2613qy-menu div { font-size: .875rem !important }
+                .select.css-2b097c-container .css-2613qy-menu { margin: 0 !important;transform: translateY(-50%); }
+                .select.css-2b097c-container .css-2613qy-menu div { font-size: .875rem !important }
                 
                 input {
                     -webkit-appearance: none;
@@ -215,7 +217,19 @@ const Content = (props) => {
                     -ms-flex-positive: 2!important;
                     flex-grow: 2!important;
                 }
-                
+
+                .item-destaque { border-radius: 4px;overflow: hidden; }
+
+                .pagination-container .pagination li a { position: relative;display: block;width: 30px;height: 30px;text-align: center;line-height: 30px;color: var(--secondary-color);transition: color .2s ease; }
+                .pagination-container .pagination li a:hover { text-decoration: none;color: var(--active-color); }
+                .pagination-container .pagination li.active a { color: var(--active-color); }
+                .pagination-container .pagination li.active a::after { position: absolute;bottom: 0;left: 50%;content: '';width: 15px;height: 2px;background-color: var(--active-color);transform: translateX(-50%); }                
+                .pagination-container .pagination li.disabled a { pointer-events: none;opacity: .4 !important; }
+
+                .pagination-container .pagination li:first-of-type a { background: url(/static/img/arrow-right.svg) no-repeat center center;background-size: 10px 16px;transform: scale(-1);text-indent: -9999px;opacity: .65; }
+                .pagination-container .pagination li:last-of-type a { background: url(/static/img/arrow-right.svg) no-repeat center center;background-size: 10px 16px;text-indent: -9999px;opacity: .65; }
+                 
+
                 @import url('/static/css/toastify.css');
 
             `}

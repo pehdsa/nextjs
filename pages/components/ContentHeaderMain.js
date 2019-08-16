@@ -18,8 +18,8 @@ export default props => {
     })
     
     const [finalidade, setFinalidade] = useState([        
-        { value: '2', label: 'Comprar' },
-        { value: '1', label: 'Alugar' }
+        { value: '2', label: 'Venda' },
+        { value: '1', label: 'Aluguel' }
     ]);
     const [tipoImovel, setTipoImovel] = useState(props.infosBusca.tipoImoveis);
     const [uf, setUf] = useState(props.infosBusca.estados);

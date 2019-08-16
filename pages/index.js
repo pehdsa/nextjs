@@ -1,12 +1,31 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Head from 'next/head'
 import Link from "next/link";
 import Content from './components/Content';
 import ContentHeader from './components/ContentHeaderMain';
+import Skeleton from './components/Skeleton';
 
 import { getApiData, urlImgs, moneyFormatter, titleSite } from '../utils/utils';
 
-const Home = (props) => {      
+const Home = (props) => {   
+    
+    const [ pageSkeleton, setPageSkeleton ] = useState(true);
+    const [ destaques, setDestaques ] = useState(props.destaques);
+    const [ noticias, setNoticias ] = useState(props.noticias);
+
+    const refDestaque = useRef(true);
+    useEffect(() => {
+        if (refDestaque.current) {
+            refDestaque.current = false;
+            setTimeout(() => {setPageSkeleton(false)}, 800);
+            return;
+        }  
+    },[destaques]);
+
+    let renderSkeletonList = new Array();
+    for (let i = 0; i < 4; i++) {
+        renderSkeletonList[i] = i;        
+    }
 
     return (
         <div>
@@ -25,14 +44,46 @@ const Home = (props) => {
                         <h2 className="color-primary font-28 m-0 pb-2">Imóveis em Destaque</h2>
                         <p className="font-14 w-50 pr-5">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout</p>
                     </div>
-                    <div className="row">
+
+                    <div className={`${ pageSkeleton ? '' : 'd-none '}row`}>
+                        { renderSkeletonList.map(imovel => { 
+                            return (
+                                <div key={imovel} className="col-3">
+                                    <div className="d-flex flex-column shadow h-100 item-destaque">
+                                        <div className="foto position-relative">
+                                            <Skeleton className="skeleton-absolute" />
+                                        </div>
+                                        <div className="d-flex flex-grow-1 flex-column bg-white px-3 py-3">
+                                            
+                                            <div className="flex-grow-2">
+                                                <Skeleton width={100} height={12} />
+                                                <Skeleton className="mt-1" width={120} height={24} />                        
+                                            </div>
+
+                                            <div className="d-flex item-infos flex-grow-1 align-items-center py-3">
+                                                <Skeleton width={177} height={11} />
+                                            </div>
+                                            
+                                            <div className="item-endereco font-12 line-height-130 pl-0">
+                                                <Skeleton width={200} height={32} /> 
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            )
+                        }) }
+                    </div>
+
+
+                    <div className={`${ pageSkeleton ? 'd-none ' : ''}row`}>
                         
-                        { props.destaques.map(dest => (
+                        { destaques.map(dest => (
                             
                             <div key={dest.id} className="col-3">
                                 <Link href={`/imovel?id=${dest.id}`}>
                                     <a className="d-flex flex-column shadow h-100 item-destaque">
-                                        <div><img src={`${urlImgs}/${dest.imagem}`} alt={dest.tipo} /></div>
+                                        <div className="foto position-relative"><img src={`${urlImgs}/${dest.imagem}`} alt={dest.tipo} /></div>
                                         <div className="d-flex flex-grow-1 flex-column bg-white px-3 py-3">
                                             
                                             <div className="flex-grow-2">
@@ -98,6 +149,8 @@ const Home = (props) => {
             {`              
                 .item-destaque { color: var(--main-color); }
                 .item-destaque:hover { text-decoration: none; }
+                .item-destaque .foto { width: 100%;padding-top: 74.82%; }
+                .item-destaque .foto img { position: absolute !important;top: 0;left: 0;z-index: 15; }
                 .item-infos img { display: inline-block; width: 18px !important; }        
                 .item-infos .info { position: relative; }
                 .item-infos .info::after { position: absolute;top: 50%;right: 0;content: '';width: 2px;height: 8px;background: #c4c4c4;transform: translate(-8px,-50%); }

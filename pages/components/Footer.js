@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import styles from '../../styles/global'
 import Map from './Map';
 
 export default function Footer(props) {
@@ -20,7 +19,8 @@ export default function Footer(props) {
                                 <div>
                                     <nav className="text-right">
                                         <Link href="/"><a>Home</a></Link>                                        
-                                        <Link href="/imoveis"><a>Imóveis</a></Link>
+                                        <Link href="/aluguel"><a>Aluguel</a></Link>
+                                        <Link href="/venda"><a>Venda</a></Link>
                                         <Link href="/banco-de-pedidos"><a>Banco de Pedidos</a></Link>
                                         <Link href="/fale-conosco"><a>Fale Conosco</a></Link>
                                     </nav>

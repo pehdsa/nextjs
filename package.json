@@ -16,12 +16,12 @@
     "next": "9.0.3",
     "nextjs-progressbar": "0.0.4",
     "qs": "6.7.0",
-    "rc-slider": "^8.6.13",
+    "rc-slider": "8.6.13",
     "react": "16.8.6",
     "react-dom": "16.8.6",
     "react-image-gallery": "0.8.18",
+    "react-js-pagination": "^3.0.2",
     "react-number-format": "4.2.0",
-    "react-range": "1.2.0",
     "react-select": "3.0.4",
     "react-toastify": "5.3.2"
   }
