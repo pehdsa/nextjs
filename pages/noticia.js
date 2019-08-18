@@ -31,7 +31,7 @@ const Noticia = (props) => {
                 
                 <ContentHeade title="Notícia" />
 
-                <div className="container noticia">        
+                <div className="container noticia px-4 px-sm-0">        
 
                     <div className="pt-5 pb-4 border-bottom">
                         <div className="font-12 color-secondary opacity-75 pb-3">{ noticia.data }</div>
@@ -41,8 +41,8 @@ const Noticia = (props) => {
                     <div className="d-table w-100 pt-4 pb-5 font-16 line-height-160 color-secondary opacity-75 texto">
                         
                         { noticia.imagem && ( 
-                            <div className="float-left mr-3 mb-3">
-                                <img src={`${urlImgs}/${noticia.imagem}`} /> 
+                            <div className="float-none float-md-left mr-0 mr-md-3 mb-3">
+                                <img className="mx-auto mx-md-0" src={`${urlImgs}/${noticia.imagem}`} /> 
                                 <span className="d-block font-12 font-italic pt-1 text-center">{ noticia.fonte }</span>
                             </div> 
                         ) }
@@ -59,23 +59,8 @@ const Noticia = (props) => {
 
                     </div>
 
-                </div>
+                </div>                
                 
-                <style jsx>
-                {`  
-                    .noticia .redes-sociais a { display: block;width: 25px;height: 25px;background-size: cover !important;text-indent: -9999px;opacity: 1;transition: opacity .2s ease }
-                    .noticia .redes-sociais a:hover { opacity: .9; }
-                    .noticia .redes-sociais a.facebook { background: url(/static/img/facebook.svg) no-repeat center center; }
-                    .noticia .redes-sociais a.instagram { background: url(/static/img/instagram.svg) no-repeat center center; }
-                    .noticia .redes-sociais a.whatsapp { background: url(/static/img/whatsapp.svg) no-repeat center center; }
-                    
-                    .texto p:last-of-type {
-                        margin-bottom: 0 !important;
-                    }
-                    .texto img { max-width: 450px; }
-
-                `}
-                </style>
 
             </Content>        
         </div>

@@ -85,39 +85,35 @@ const Imoveis = (props) => {
             <Content dadosAnunciante={props.dadosAnunciante} telefones={props.telefones}>
                 <Head>   
                     <meta name="metas-contato" />  
-                    <title>Venda | { titleSite }</title>
+                    <title>Aluguel | { titleSite }</title>
                 </Head>
                 
-                <ContentHeade title="Imóveis para Venda" />
+                <ContentHeade title="Imóveis para Locação" />
 
-                <div ref={bloco} className="container">
+                <div ref={bloco} className="container px-4 px-sm-0">
 
                     {listaImoveis.length > 0 ? (
                         <>
 
-                        <header className={`${ pageSkeleton ? 'd-flex ' : 'd-none '}justify-content-between align-items-center pt-5`}>
+                        <header className={`${ pageSkeleton ? 'd-flex ' : 'd-none '}justify-content-between align-items-md-center flex-column flex-md-row pt-2 pt-md-5`}>
                             <Skeleton width={195} height={27} />
                             <Skeleton width={200} height={38} />
                         </header>
                         
-                        <header className={`${ pageSkeleton ? 'd-none ' : 'd-flex '}topo-lista justify-content-between align-items-center pt-5`}>
-                            <div className="font-18 qtde pr-5">                                      
-                                { totalImoveis > itensPorPagina ? (
-                                    <b className="pr-2">{ pagina * itensPorPagina } de { totalImoveis } imóveis</b>
-                                ) : (
-                                    <b className="pr-2">{totalImoveis > 1 ? `${totalImoveis} imóveis` : `${totalImoveis} imóvel` }</b>
-                                ) }                                
+                        <header className={`${ pageSkeleton ? 'd-none ' : 'd-flex '}topo-grid justify-content-between align-items-md-center flex-column flex-md-row pt-2 pt-md-5`}>
+                            <div className="d-none d-md-block font-14 font-md-18 qtde text-right text-md-left pr-0 pr-md-5">                                      
+                                <b className="pr-2 pl-2 pl-md-0">{totalImoveis > 1 ? `${totalImoveis} imóveis` : `${totalImoveis} imóvel` }</b>
                             </div>
-                            <div>  
+                            <div className="pt-3 pt-md-0">  
                                 <Select className="select filtro" defaultInputValue={filtrado ? filtrado : ''} onChange={(e) => setFiltrado(e.value)} name="" placeholder="FILTRAR" options={filtros} />                                
                             </div>
                         </header>
                         
                         <div className={`${ pageSkeleton ? '' : 'd-none '}row pt-2 pb-5`}>
-                            { renderSkeletonList.map(imovel => {
+                            { renderSkeletonList.map((imovel, index) => {
                                 return (
-                                    <div key={imovel} className="col-3 py-4">
-                                        <div className="d-flex flex-column shadow h-100 item-destaque">
+                                    <div key={index} className="col-12 col-md-6 col-xl-3 py-4">
+                                        <div className="d-flex flex-column shadow h-100 item-grid">
                                             <div className="foto position-relative">
                                                 <Skeleton className="skeleton-absolute" />
                                             </div>
@@ -128,11 +124,11 @@ const Imoveis = (props) => {
                                                     <Skeleton className="mt-1" width={120} height={24} />                        
                                                 </div>
 
-                                                <div className="d-flex item-infos flex-grow-1 align-items-center py-3">
+                                                <div className="d-flex infos flex-grow-1 align-items-center py-3">
                                                     <Skeleton width={177} height={11} />
                                                 </div>
                                                 
-                                                <div className="item-endereco font-12 line-height-130 pl-0">
+                                                <div className="endereco font-12 line-height-130 pl-0">
                                                     <Skeleton width={200} height={32} /> 
                                                 </div>
                                                 
@@ -147,9 +143,9 @@ const Imoveis = (props) => {
                             
                             { listaImoveis.map(imovel => {
                                 return (
-                                    <div key={imovel.id} className="col-3 py-4">
+                                    <div key={imovel.id} className="col-12 col-md-6 col-xl-3 py-4">
                                         <Link href={`/imovel?id=${imovel.id}`}>
-                                            <a className="d-flex flex-column shadow h-100 item-destaque">
+                                            <a className="d-flex flex-column shadow h-100 item-grid">
                                                 <div className="foto position-relative">
                                                     { imovel.imagem ? (
                                                         <img src={`${urlImgs}/${imovel.imagem}`} alt={imovel.tipo} /> 
@@ -173,7 +169,7 @@ const Imoveis = (props) => {
                                                         { imovel.valor_condominio && <div className="font-11 line-height-100 color-secondary">Condomínio: R$ {moneyFormatter(imovel.valor_condominio)}</div> }
                                                     </div>
 
-                                                    <div className="d-flex item-infos flex-grow-1 align-items-center py-3">
+                                                    <div className="d-flex infos flex-grow-1 align-items-center py-3">
                                                         <div className="d-flex">
                                                             { imovel.dormitorios != 0 && <div className="info info-dormitorios font-11 line-height-100 pr-3"><div>{imovel.dormitorios}</div></div> }
                                                             { imovel.banheiros != 0 && <div className="info info-banheiros font-11 line-height-100 pr-3"><div>{imovel.banheiros}</div></div> }
@@ -181,7 +177,7 @@ const Imoveis = (props) => {
                                                         </div>
                                                     </div>
                                                     
-                                                    <div className="item-endereco font-12 line-height-130">
+                                                    <div className="endereco font-12 line-height-130">
                                                         <img src="/static/img/place.svg" alt="" />
                                                         {`${imovel.endereco} - ${imovel.bairro} | ${imovel.cidade}/${imovel.uf}`}
                                                     </div>
@@ -216,35 +212,6 @@ const Imoveis = (props) => {
                     )}                                        
 
                 </div>
-                
-                <style jsx>
-                {`              
-                    .item-destaque { color: var(--main-color); }
-                    .item-destaque:hover { text-decoration: none; }
-                    .item-destaque .foto { width: 100%;padding-top: 74.82%; }
-                    .item-destaque .foto img { position: absolute !important;top: 0;left: 0;z-index: 15; }
-                    .item-infos img { display: inline-block; width: 18px !important; }        
-                    .item-infos .info { position: relative; }
-                    .item-infos .info::after { position: absolute;top: 50%;right: 0;content: '';width: 2px;height: 8px;background: #c4c4c4;transform: translate(-8px,-50%); }
-                    .item-infos .info:last-child::after { display: none; }
-                    .item-infos .info > div { position: relative;padding-left: 22px; }
-                    .item-infos .info > div::before { position: absolute;top: 50%;left: 0;content: '';background-size: cover !important;transform: translate(0,-50%); }                
-                    .item-infos .info-dormitorios > div::before { width: 18px;height: 12px;background: url(/static/img/quartos.svg) no-repeat center center; }
-                    .item-infos .info-banheiros > div::before { width: 18px;height: 12px;background: url(/static/img/chuveito.svg) no-repeat center center; }
-                    .item-infos .info-area > div::before { width: 14px;height: 14px;background: url(/static/img/metragem.svg) no-repeat center center; }
-
-                    .item-endereco { position: relative;padding: 0 0 0 25px; }
-                    .item-endereco img { position: absolute;top: 50%;left: 0;width: 15px;transform: translate(0px,-50%); }                   
-                    
-                    .topo-lista { position: relative;z-index: 50; }
-                    .topo-lista .qtde { position: relative; }
-                    .topo-lista .qtde::before { content: '';position: absolute;top: 50%;left: 0;width: 100%;height: 1px;background-color: var(--main-color);transform: translate(0,-50%); }
-                    .topo-lista .qtde b { position: relative;background: var(--main-background);z-index: 10; }
-
-                    .topo-lista .filtro { width: 200px; }                                                     
-
-                `}
-                </style>
 
             </Content>        
         </div>

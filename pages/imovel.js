@@ -126,7 +126,7 @@ const Imovel = (props) => {
                 
                 <ContentHeade title="Imóvel" />
 
-                <div className="container visualizacao">        
+                <div className="container visualizacao px-4 px-sm-0">        
                     
                     <header className={`${ pageSkeleton ? 'd-flex ' : 'd-none '}justify-content-between align-items-center pt-5`}>
                         <Skeleton width={280} height={24} />                    
@@ -141,9 +141,68 @@ const Imovel = (props) => {
                     </header>
 
                     <div className="row py-5">
-                        <div className="col-7">
+                        <div className="col-12 col-lg-7">
+
+                            <div className="redes-sociais d-flex d-lg-none" style={{ transform: 'translate(-15px, -115%)' }}>
+                                <a href={`https://www.facebook.com/sharer/sharer.php?u=${urlSite}/imovel?id=${imovel.id}`} className="facebook mx-0" target="_blank" rel="nofollow">Facebook</a>   
+                                <a href={`https://twitter.com/intent/tweet?text=${urlSite}/imovel?id=${imovel.id}`} className="instagram mx-1" target="_blank" rel="nofollow">Instagram</a>
+                                <a href={`https://wa.me/?text=${urlSite}/imovel?id=${imovel.id}`} className="whatsapp mx-0" target="_blank" rel="nofollow">Whatsapp</a>
+                            </div>
                             
                             { imovel.imagens ? <ImageGallery showFullscreenButton={false} items={images} /> : <div><img src="/static/img/sm-foto.jpg" /></div> }
+
+                            <div className="pt-3 pb-4 d-block d-lg-none">                                
+
+                                <Skeleton className={`${ pageSkeleton ? 'd-block ' : 'd-none '}`} width={150} height={20} />
+                                <div className={`${ pageSkeleton ? 'd-none ' : 'd-block '}text-uppercase font-12 opacity-25 color-primary`}>{ `${imovel.finalidade} - ${imovel.tipo}` }</div>
+                                
+                                <Skeleton className={`${ pageSkeleton ? 'd-block ' : 'd-none '}my-2`} width={210} height={38} />
+                                <div className={`${ pageSkeleton ? 'd-none ' : 'd-block '}font-32 color-primary`}><b>{ imovel.valor ? `R$ ${moneyFormatter(imovel.valor)}` : 'SEM VALOR' }</b></div>
+                                
+                                { pageSkeleton &&  <Skeleton className={`my-2`} width={180} height={38} /> }
+                                
+                                { (imovel.valor_condominio && !pageSkeleton ) && <div className="font-12 color-secondary">{ `Condomínio: R$ ${moneyFormatter(imovel.valor_condominio)}` }</div> }
+                                { (imovel.valor_iptu && !pageSkeleton ) && <div className="font-12 color-secondary">IPTU: {imovel.valor_iptu}</div> }
+                                
+                                { (imovel.areatotal && imovel.areaconstruida && !pageSkeleton) && (
+                                    <div className="font-12 color-secondary opacity-75 pt-2">
+                                        Área Total: {imovel.areatotal} m<sup>2</sup> / Construída: {imovel.areaconstruida} m<sup>2</sup>                                        
+                                    </div>  
+                                )}
+
+                            </div>
+
+                            <div className="d-block d-lg-none">
+                                <div className={`${ pageSkeleton ? 'd-block ' : 'd-none '}border-top border-bottom py-3`}>
+                                    <Skeleton  width={`100%`} height={37} />
+                                </div>
+
+                                <div className={`${ pageSkeleton ? 'd-none ' : 'd-flex '}border-top border-bottom py-3 flex-column flex-md-row`}>
+                                    <div className="endereco d-flex align-items-center flex-grow-1 pr-4 font-14 line-height-130">
+                                        <img src="/static/img/place.svg" alt="" />
+                                        {`${imovel.endereco} - ${imovel.bairro} | ${imovel.cidade}/${imovel.uf}`}
+                                    </div>
+                                    { (imovel.latitude && imovel.longitude) && <button type="button" onClick={() => handleClickMap()} className="btn btn-secondary shadow-sm text-white font-13 px-4 py-2 m-0 mt-3 mt-md-0"><b>VER NO MAPA</b></button> }
+                                </div>
+                            </div>
+
+                            <div className="d-block d-lg-none">
+                            { imovel.caracteristicas && (
+                                <>
+                                <div className={`${ pageSkeleton ? 'd-block ' : 'd-none '}pt-4`}> 
+                                    <Skeleton  width={`100%`} height={40} />
+                                </div>
+
+                                <div className={`${ pageSkeleton ? 'd-none ' : 'd-block '}pt-4 font-14`}> 
+                                    <ul>
+                                        { imovel.caracteristicas.map((item, index) => <li key={index}>{item}</li> ) }
+                                    </ul>
+                                </div>
+                                </>
+                            ) }  
+                            </div>      
+
+                            
 
                             { imovel.maisdescricao && (
                                 <>
@@ -190,7 +249,7 @@ const Imovel = (props) => {
                                     <div className="d-flex border-bottom mb-3"><h2 className="font-14 border-bottom py-2 color-active mb-0">TEM NAS PROXIMIDADES</h2></div>
                                     <div className="font-14">
                                         <ul>
-                                            { imovel.infraestrutura.map(item => <li>{item}</li> ) }
+                                            { imovel.infraestrutura.map((item, index) => <li key={index}>{item}</li> ) }
                                         </ul>
                                     </div>
                                 </div>
@@ -198,9 +257,9 @@ const Imovel = (props) => {
                             ) }
 
                         </div>
-                        <div className="col-5">
+                        <div className="col-12 col-lg-5">
                             
-                            <div className="pb-4">
+                            <div className="pb-4 d-none d-lg-block">
                                 <div className="redes-sociais d-flex">
                                     <a href={`https://www.facebook.com/sharer/sharer.php?u=${urlSite}/imovel?id=${imovel.id}`} className="facebook mx-0" target="_blank" rel="nofollow">Facebook</a>   
                                     <a href={`https://twitter.com/intent/tweet?text=${urlSite}/imovel?id=${imovel.id}`} className="instagram mx-1" target="_blank" rel="nofollow">Instagram</a>
@@ -225,19 +284,22 @@ const Imovel = (props) => {
                                 )}
 
                             </div>
-
-                            <div className={`${ pageSkeleton ? 'd-block ' : 'd-none '}border-top border-bottom py-3`}>
-                                <Skeleton  width={`100%`} height={37} />
-                            </div>
-
-                            <div className={`${ pageSkeleton ? 'd-none ' : 'd-flex '}border-top border-bottom py-3`}>
-                                <div className="endereco d-flex align-items-center flex-grow-1 pr-4 font-14 line-height-130">
-                                    <img src="/static/img/place.svg" alt="" />
-                                    {`${imovel.endereco} - ${imovel.bairro} | ${imovel.cidade}/${imovel.uf}`}
+                            
+                            <div className="d-none d-lg-block">
+                                <div className={`${ pageSkeleton ? 'd-block ' : 'd-none '}border-top border-bottom py-3`}>
+                                    <Skeleton  width={`100%`} height={37} />
                                 </div>
-                                { (imovel.latitude && imovel.longitude) && <button type="button" onClick={() => handleClickMap()} className="btn btn-secondary shadow-sm w-50 text-white font-13 px-0 py-2 m-0"><b>VER NO MAPA</b></button> }
+
+                                <div className={`${ pageSkeleton ? 'd-none ' : 'd-flex '}border-top border-bottom py-3`}>
+                                    <div className="endereco d-flex align-items-center flex-grow-1 pr-4 font-14 line-height-130">
+                                        <img src="/static/img/place.svg" alt="" />
+                                        {`${imovel.endereco} - ${imovel.bairro} | ${imovel.cidade}/${imovel.uf}`}
+                                    </div>
+                                    { (imovel.latitude && imovel.longitude) && <button type="button" onClick={() => handleClickMap()} className="btn btn-secondary shadow-sm w-50 text-white font-13 px-0 py-2 m-0"><b>VER NO MAPA</b></button> }
+                                </div>
                             </div>
                             
+                            <div className="d-none d-lg-block">
                             { imovel.caracteristicas && (
                                 <>
                                 <div className={`${ pageSkeleton ? 'd-block ' : 'd-none '}pt-4`}> 
@@ -246,13 +308,14 @@ const Imovel = (props) => {
 
                                 <div className={`${ pageSkeleton ? 'd-none ' : 'd-block '}pt-4 font-14`}> 
                                     <ul>
-                                        { imovel.caracteristicas.map(item => <li>{item}</li> ) }
+                                        { imovel.caracteristicas.map((item, index) => <li key={index}>{item}</li> ) }
                                     </ul>
                                 </div>
                                 </>
-                            ) }                            
+                            ) }  
+                            </div>                          
 
-                            <div className="border p-5 mt-4">
+                            <div className="border p-4 p-md-5 mt-4">
                                 <h2 className="font-24 m-0 p-0 color-primary">Entre em Contato</h2> 
                                 <p className="font-12 color-secondary opacity-75">Preencha o formulário abaixo</p>
                                 
@@ -294,32 +357,7 @@ const Imovel = (props) => {
 
 
                 </div>
-                
-                <style jsx>
-                {`              
-                    
-                    .visualizacao .topo-visualizacao .titulo { position: relative; }
-                    .visualizacao .topo-visualizacao .titulo::before { content: '';position: absolute;top: 50%;left: 0;width: 100%;height: 1px;background-color: var(--main-color);transform: translate(0,-50%); }
-                    .visualizacao .topo-visualizacao .titulo span { position: relative;background: var(--main-background);z-index: 10; }
-
-                    .visualizacao .descricao h2 { border-color: var(--active-color) !important; }
-                    .visualizacao ul { list-style: inside;column-count: 2;column-gap: 20px; }
-
-                    .visualizacao .endereco { position: relative;padding-left: 25px; }
-                    .visualizacao .endereco img { position: absolute;top: 50%;left: 0;width: 15px;transform: translate(0px,-50%); } 
-
-                    .visualizacao .redes-sociais { position: absolute;top: 0;right: 0;z-index: 15; }
-                    .visualizacao .redes-sociais a { display: block;width: 30px;height: 30px;background-size: cover !important;text-indent: -9999px;opacity: .8;transition: opacity .2s ease }
-                    .visualizacao .redes-sociais a:hover { opacity: 1; }
-                    .visualizacao .redes-sociais a.facebook { background: url(/static/img/facebook.svg) no-repeat center center; }
-                    .visualizacao .redes-sociais a.instagram { background: url(/static/img/instagram.svg) no-repeat center center; }
-                    .visualizacao .redes-sociais a.whatsapp { background: url(/static/img/whatsapp.svg) no-repeat center center; }
-
-                    @import url('/static/css/gallery.css');
-
-                `}
-                </style>
-
+                                
             </Content>        
         </div>
     );

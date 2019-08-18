@@ -89,10 +89,9 @@ export default props => {
     
     return (
         
-        <header className="primary content-header">
+        <header className="content-header-primary">
         
-            <div className="container py-4">
-                
+            <div className="container py-4">                
                
                 <div className="content-search bg-white shadow">
                     <form className="d-flex flex-column h-100">
@@ -110,11 +109,11 @@ export default props => {
                                     <Select className="select" name="" placeholder="TIPO DO IMÓVEL" onChange={e => handleOptionChange('tipo',e.value)} options={tipoImovel} /> 
                                 </div>
 
-                                <div className="col-4 pb-2 mb-1 pr-md-0">
+                                <div className="col-12 col-md-4 pb-2 mb-1 pr-3 pr-md-0">
                                     <Select className="select" name="" placeholder="UF" onChange={e => handleOptionChange('uf',e.value)} options={uf} />
                                 </div>
 
-                                <div className="col-8 pb-2 mb-1 pl-md-0">
+                                <div className="col-12 col-md-8 pb-2 mb-1 pl-3 pl-md-0">
                                     <Select className="select" name="" placeholder="CIDADE" onChange={e => handleOptionChange('cidade',e.value)} options={cidade} />
                                 </div>
 
@@ -145,49 +144,10 @@ export default props => {
 
                     </form>
                 </div>
-                
-
-                
 
             </div>
-            
-            <style jsx>
-                {`                
-                    .content-header.primary {   
-                        position: relative;                                             
-                        background: url("/static/img/img-destaque-home.jpg") no-repeat center center;
-                        background-size: cover !important;
-                        background-color: #ddd;
-                        z-index: 100;
-                    }                    
-                    
-                    .content-header > .container { 
-                        position: relative;
-                        height: var(--content-primary-header-height); 
-                    }                    
-                    .content-header > .container h1 { position: relative;z-index: 2; }                     
-
-                    .content-search {
-                        position: absolute;
-                        bottom:0;
-                        right: 0;
-                        width: 350px;
-                        height: 460px;                        
-                        transform: translate(0,110px);
-                        padding: 30px 35px;
-                    }            
-                    
-                    @import url('/static/css/range.css');
-                    
-
-                `}
-            </style>
                 
         </header>
-        
-        
-        
-        
         
     );
     

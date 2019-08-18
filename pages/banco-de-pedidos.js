@@ -5,7 +5,6 @@ import ContentHeade from './components/ContentHeader';
 import NumberFormat from 'react-number-format';
 import Select from 'react-select';
 
-
 import { getApiData, existsOrError, IsEmail, isMobile, notify, titleSite } from '../utils/utils';
 
 const BancoPedidos = (props) => { 
@@ -25,7 +24,6 @@ const BancoPedidos = (props) => {
     ];
 
     const [ loading, setLoading ] = useState(false);
-
     const [ formulario, setFormulario ] = useState({ nomecompleto: '',email: '',cidade: '',uf: '',telefone: '',bairroPedido: '',ufPedido: '',cidadePedido: '',finalidade: '',tipo: '',min: '',max: '',obs: '' });
     
     function handleForm(valores) {
@@ -95,7 +93,7 @@ const BancoPedidos = (props) => {
                 
                 <ContentHeade title="Banco de Pedidos" />
 
-                <div className="container py-5 font-14">
+                <div className="container py-5 font-14 px-4 px-sm-0">
                     <p>Preencha o formulário abaixo e solicite o imóvel que tanto deseja, descreva as principais características, que iremos procurar para você!</p>
                     <p>Utilizando o Banco de Pedidos, iremos procurar junto aos nossos parceiros o imóvel que está procurando, com isto você aumentará as chances de encontrar o imóvel que tanto deseja.</p>
                     <p>Não perca a oportunidade de utilizar esta ferramenta e se aproximar do imóvel do seus sonhos.</p>
@@ -103,13 +101,13 @@ const BancoPedidos = (props) => {
 
                     <div className="row py-4">
 
-                        <div className="col-4">
+                        <div className="d-none d-xl-block col-4">
                             <img src="/static/img/foto-destaque-banco-de-pedidos.jpg" alt="" />
                         </div>
-                        <div className="col-8">
+                        <div className="col-12 col-xl-8">
                             <form>
                                 <div className="row mx-0">
-                                    <div className="col-6 pl-0 pr-4">
+                                    <div className="col-12 col-md-6 pl-0 pr-0 pr-md-4">
                                         
                                         <h2 className="font-24 color-primary pb-4">Seus Dados</h2>
                                         
@@ -120,10 +118,10 @@ const BancoPedidos = (props) => {
                                             <div className="col-12 px-0 pb-2 mb-1">
                                                 <input type="email" className={ !validate.validateEmail ? 'is-invalid' : '' } placeholder="E-MAIL" value={formulario.email} onChange={(e) => handleForm({email: e.target.value})} />
                                             </div>
-                                            <div className="col-10 px-0 pb-2 mb-1">
+                                            <div className="col-12 col-md-10 px-0 pb-2 mb-1">
                                                 <input type="text" className={ !validate.validateCity ? 'is-invalid' : '' } placeholder="CIDADE" value={formulario.cidade} onChange={(e) => handleForm({cidade: e.target.value})} />
                                             </div>
-                                            <div className="col-2 px-0 pb-2 mb-1">                                            
+                                            <div className="col-12 col-md-2 px-0 pb-2 mb-1">                                            
                                                 <input type="text" placeholder="UF" maxLength="2" className={ !validate.validateUf ? 'is-invalid text-uppercase' : 'text-uppercase'} value={formulario.uf} onChange={(e) => handleForm({uf: e.target.value})} /> 
                                             </div>
                                             <div className="col-12 px-0 pb-2 mb-1">
@@ -132,7 +130,7 @@ const BancoPedidos = (props) => {
                                         </div>
 
                                     </div>
-                                    <div className="col-6 pl-4 pr-0">
+                                    <div className="col-12 col-md-6 pt-3 pt-md-0 pl-0 pl-md-4 pr-0">
                                         <h2 className="font-24 color-primary pb-4">Dados do Imóvel</h2>
                                         
                                         <div className="row mx-0">
@@ -141,27 +139,27 @@ const BancoPedidos = (props) => {
                                                 <input type="text" placeholder="BAIRRO" value={formulario.bairroPedido} onChange={(e) => handleForm({bairroPedido: e.target.value})} />
                                             </div>
 
-                                            <div className="col-2 pb-2 mb-1 px-0">
+                                            <div className="col-12 col-md-2 pb-2 mb-1 px-0">
                                                 <input type="text" placeholder="UF" className="text-uppercase" maxLength="2" value={formulario.ufPedido} onChange={(e) => handleForm({ufPedido: e.target.value})} />
                                             </div>
 
-                                            <div className="col-10 pb-2 mb-1 px-0">
+                                            <div className="col-12 col-md-10 pb-2 mb-1 px-0">
                                                 <input type="text" placeholder="CIDADE" value={formulario.cidadePedido} onChange={(e) => handleForm({cidadePedido: e.target.value})} />
                                             </div>
 
-                                            <div className="col-6 pb-2 mb-1 px-0">
+                                            <div className="col-12 col-md-6 pb-2 mb-1 px-0">
                                                 <Select className="select" defaultValue={formulario.finalidade} onChange={(e) => handleForm({ finalidade: e.value})} placeholder="FINALIDADE" options={options} />
                                             </div>
 
-                                            <div className="col-6 pb-2 mb-1 px-0">
+                                            <div className="col-12 col-md-6 pb-2 mb-1 px-0">
                                                 <Select className="select" defaultValue={formulario.tipo} onChange={(e) => handleForm({ tipo: e.value})} placeholder="TIPO DO IMÓVEL" options={tipo} />
                                             </div>
                                             
-                                            <div className="col-6 pb-2 mb-1 px-0">
+                                            <div className="col-12 col-md-6 pb-2 mb-1 px-0">
                                                 <NumberFormat placeholder="VALOR MÍNIMO" thousandSeparator={true} prefix={'R$ '} value={formulario.min} onChange={(e) => handleForm({ min: e.target.value })} />
                                             </div>
 
-                                            <div className="col-6 pb-2 mb-1 px-0">
+                                            <div className="col-12 col-md-6 pb-2 mb-1 px-0">
                                                 <NumberFormat placeholder="VALOR MÁXIMO" thousandSeparator={true} prefix={'R$ '} value={formulario.max} onChange={(e) => handleForm({ max: e.target.value })} />
                                             </div>
                                             
@@ -188,14 +186,7 @@ const BancoPedidos = (props) => {
 
                     
 
-                </div>
-
-                <style jsx>
-                {`              
-                    
-
-                `}
-                </style>
+                </div>                
 
             </Content>        
         </div>

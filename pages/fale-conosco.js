@@ -81,13 +81,13 @@ const FaleConosco = (props) => {
 
                     <div className="row py-4">
 
-                        <div className="col-4">
+                        <div className="d-none d-xl-block col-4">
                             <img src="/static/img/foto-destaque-banco-de-pedidos.jpg" alt="" />
                         </div>
-                        <div className="col-8">
+                        <div className="col-12 col-xl-8">
                             <form>
                                 <div className="row mx-0">
-                                    <div className="col-6 pl-0 pr-4">                                        
+                                    <div className="col-12 col-md-6 pl-0 pr-0 pr-md-4">                                        
                                         <h2 className="font-24 color-primary pb-4">Seus Dados</h2>                                        
                                         <div className="row mx-0">
 
@@ -97,10 +97,10 @@ const FaleConosco = (props) => {
                                             <div className="col-12 px-0 pb-2 mb-1">
                                                 <input type="email" className={ !validate.validateEmail ? 'is-invalid' : '' } placeholder="E-MAIL" value={formulario.email} onChange={(e) => handleForm({email: e.target.value})} />
                                             </div>
-                                            <div className="col-10 px-0 pb-2 mb-1">
+                                            <div className="col-12 col-md-10 px-0 pb-2 mb-1">
                                                 <input type="text" className={ !validate.validateCity ? 'is-invalid' : '' } placeholder="CIDADE" value={formulario.cidade} onChange={(e) => handleForm({cidade: e.target.value})} />
                                             </div>
-                                            <div className="col-2 px-0 pb-2 mb-1">                                            
+                                            <div className="col-12 col-md-2 px-0 pb-2 mb-1">                                            
                                                 <input type="text" placeholder="UF" maxLength="2" className={ !validate.validateUf ? 'is-invalid text-uppercase' : 'text-uppercase'} value={formulario.uf} onChange={(e) => handleForm({uf: e.target.value})} /> 
                                             </div>
                                             <div className="col-12 px-0 pb-2 mb-1">
