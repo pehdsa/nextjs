@@ -148,11 +148,11 @@ const BancoPedidos = (props) => {
                                             </div>
 
                                             <div className="col-12 col-md-6 pb-2 mb-1 px-0">
-                                                <Select className="select" defaultValue={formulario.finalidade} onChange={(e) => handleForm({ finalidade: e.value})} placeholder="FINALIDADE" options={options} />
+                                                <Select className="select" classNamePrefix="react-select" defaultValue={formulario.finalidade} onChange={(e) => handleForm({ finalidade: e.value})} placeholder="FINALIDADE" options={options} />
                                             </div>
 
                                             <div className="col-12 col-md-6 pb-2 mb-1 px-0">
-                                                <Select className="select" defaultValue={formulario.tipo} onChange={(e) => handleForm({ tipo: e.value})} placeholder="TIPO DO IMÓVEL" options={tipo} />
+                                                <Select className="select" classNamePrefix="react-select" defaultValue={formulario.tipo} onChange={(e) => handleForm({ tipo: e.value})} placeholder="TIPO DO IMÓVEL" options={tipo} />
                                             </div>
                                             
                                             <div className="col-12 col-md-6 pb-2 mb-1 px-0">

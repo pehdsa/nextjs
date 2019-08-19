@@ -65,7 +65,7 @@ const Content = (props) => {
 
                 }
 
-                @import url('/static/css/styles.css');
+                @import url('static/css/styles.css'); 
 
             `}
             </style>

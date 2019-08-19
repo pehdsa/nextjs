@@ -7,8 +7,8 @@ import Skeleton from './components/Skeleton';
 
 import { getApiData, urlImgs, moneyFormatter, titleSite } from '../utils/utils';
 
-const Home = (props) => {   
-    
+const Home = (props) => {       
+
     const [ pageSkeleton, setPageSkeleton ] = useState(true);
     const [ destaques, setDestaques ] = useState(props.destaques);
     const [ noticias, setNoticias ] = useState(props.noticias);
@@ -17,7 +17,7 @@ const Home = (props) => {
     useEffect(() => {
         if (refDestaque.current) {
             refDestaque.current = false;
-            setTimeout(() => {setPageSkeleton(false)}, 800);
+            setTimeout(() => {setPageSkeleton(false)}, 100);
             return;
         }  
     },[destaques]);

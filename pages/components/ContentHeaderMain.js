@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
 import Slider from 'rc-slider';
 const Range = Slider.Range;
+import Router from 'next/router';
 
 import { getApiData, moneyFormatter } from '../../utils/utils';
 
 export default props => {
 
+    const [ loading, setLoading ] = useState(false);
     const [ formulario, setFormulario ] = useState({
         finalidade: '',
         tipo: '',
@@ -18,13 +20,17 @@ export default props => {
     })
     
     const [finalidade, setFinalidade] = useState([        
-        { value: '2', label: 'Venda' },
-        { value: '1', label: 'Aluguel' }
+        { value: '1', label: 'Aluguel' },
+        { value: '2', label: 'Venda' }
     ]);
     const [tipoImovel, setTipoImovel] = useState(props.infosBusca.tipoImoveis);
     const [uf, setUf] = useState(props.infosBusca.estados);
-    const [cidade, setCidade] = useState([]);
-    const [bairro, setBairro] = useState([]);    
+    const [cidade, setCidade] = useState([
+        { value: '', label: 'Selecione' }
+    ]);
+    const [bairro, setBairro] = useState([
+        { value: '', label: 'Selecione' }
+    ]);    
              
     const [finalidadeSelecionada, setFinalidadeSelecionada] = useState('2');
 
@@ -58,10 +64,12 @@ export default props => {
             setFormulario({ ...formulario, tipo: valor });
         } else if (tipo === 'uf') {
             setFormulario({ ...formulario, uf: valor });
+            setCidade([{value: '', label: 'Carregando'}]);
             const response = await getApiData('cidades',valor);
             setCidade(response);
         } else if (tipo === 'cidade') {
             setFormulario({ ...formulario, cidade: valor });
+            setBairro([{value: '', label: 'Carregando'}]);
             const response = await getApiData('bairros',valor);
             setBairro(response);
         } else if (tipo === 'bairro') {
@@ -71,20 +79,11 @@ export default props => {
     }
 
     function handleSubmit() {
-
-        console.log(formulario);
-                 
-        /*
         setLoading(true);
-        const response = await getApiData('faleconosco','','','','',formulario);
-        if (response.status == 'sucesso' ) {
-            notify('sucesso', 'Mensagem enviada com sucesso');            
-        } else {
-            notify('erro', 'Ocorreu um erro inesperado, tente novamente mais tarde');
-        }        
-        setLoading(false);
-        */        
-
+        Router.push({
+            pathname: '/busca',
+            query: { ...formulario },
+        });
     }
     
     return (
@@ -102,23 +101,23 @@ export default props => {
                             <div className="row">
                                 
                                 <div className="col-12 pb-2 mb-1">
-                                    <Select className="select" name="" placeholder="FINALIDADE" onChange={e => handleOptionChange('finalidade',e.value)} options={finalidade} />
+                                    <Select className="select" classNamePrefix="react-select" placeholder="FINALIDADE" onChange={e => handleOptionChange('finalidade',e.value)} options={finalidade} />
                                 </div>
 
                                 <div className="col-12 pb-2 mb-1">
-                                    <Select className="select" name="" placeholder="TIPO DO IMÓVEL" onChange={e => handleOptionChange('tipo',e.value)} options={tipoImovel} /> 
+                                    <Select className="select" classNamePrefix="react-select" placeholder="TIPO DO IMÓVEL" onChange={e => handleOptionChange('tipo',e.value)} options={tipoImovel} /> 
                                 </div>
 
                                 <div className="col-12 col-md-4 pb-2 mb-1 pr-3 pr-md-0">
-                                    <Select className="select" name="" placeholder="UF" onChange={e => handleOptionChange('uf',e.value)} options={uf} />
+                                    <Select className="select" classNamePrefix="react-select" placeholder="UF" onChange={e => handleOptionChange('uf',e.value)} options={uf} />
                                 </div>
 
                                 <div className="col-12 col-md-8 pb-2 mb-1 pl-3 pl-md-0">
-                                    <Select className="select" name="" placeholder="CIDADE" onChange={e => handleOptionChange('cidade',e.value)} options={cidade} />
+                                    <Select className="select" classNamePrefix="react-select" placeholder="CIDADE" onChange={e => handleOptionChange('cidade',e.value)} options={cidade} />
                                 </div>
 
                                 <div className="col-12 pb-2 mb-2">
-                                    <Select className="select" name="" placeholder="BAIRRO" onChange={e => handleOptionChange('bairro',e.value)} options={bairro} />                                        
+                                    <Select className="select" classNamePrefix="react-select" placeholder="BAIRRO" onChange={e => handleOptionChange('bairro',e.value)} options={bairro} />                                        
                                 </div>
 
                                 <div className="col-12 pb-2 mb-1">
@@ -140,7 +139,10 @@ export default props => {
                             </div>
                         </div>
                         
-                        <button type="button" className="btn btn-primary font-14 w-100 py-3" onClick={() => handleSubmit()}>BUSCAR AGORA</button>                            
+                        <button type="button" className="btn btn-primary font-14 w-100 py-3" onClick={() => handleSubmit()} disabled={ loading ? true : false }>
+                            { loading && <span className="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span> }
+                            { loading ? 'BUSCANDO' : 'BUSCAR AGORA' }
+                        </button>
 
                     </form>
                 </div>

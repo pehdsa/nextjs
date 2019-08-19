@@ -17,7 +17,7 @@ const Imovel = (props) => {
     useEffect(() => {
         if (refImovel.current) {
             refImovel.current = false;
-            setTimeout(() => {setPageSkeleton(false)}, 800);
+            setTimeout(() => {setPageSkeleton(false)}, 100);
             return;
         }
     },[imovel])
@@ -149,7 +149,7 @@ const Imovel = (props) => {
                                 <a href={`https://wa.me/?text=${urlSite}/imovel?id=${imovel.id}`} className="whatsapp mx-0" target="_blank" rel="nofollow">Whatsapp</a>
                             </div>
                             
-                            { imovel.imagens ? <ImageGallery showFullscreenButton={false} items={images} /> : <div><img src="/static/img/sm-foto.jpg" /></div> }
+                            { imovel.imagens ? <ImageGallery lazyLoad={true} showFullscreenButton={false} items={images} /> : <div><img src="/static/img/sm-foto.jpg" /></div> }
 
                             <div className="pt-3 pb-4 d-block d-lg-none">                                
 

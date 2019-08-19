@@ -31,7 +31,7 @@ const Imoveis = (props) => {
     useEffect(() => {
         if (ref.current) {
             ref.current = false;
-            setTimeout(() => {setPageSkeleton(false)}, 800);
+            setTimeout(() => {setPageSkeleton(false)}, 100);
             return;
         }        
         setPageSkeleton(true);
@@ -45,14 +45,14 @@ const Imoveis = (props) => {
         async function getItens() {
             const response = await getApiData('busca','','',((filtrado && filtrado != 'default') ? filtrado : ''),'finalidade=1','',pagina);
             setImoveis(response.imoveis);
-            setTimeout(() => {setPageSkeleton(false)}, 800);
+            setTimeout(() => {setPageSkeleton(false)}, 100);
         }
         getItens();        
         
     }, [pagina]);
 
     let renderSkeletonList = new Array();
-    for (let i = 0; i < itensPorPagina; i++) {
+    for (let i = 0; i < listaImoveis.length; i++) {
         renderSkeletonList[i] = i;        
     }
     
@@ -61,7 +61,7 @@ const Imoveis = (props) => {
     useEffect(() => {  
         if (refFiltro.current) {
             refFiltro.current = false;
-            setTimeout(() => {setPageSkeleton(false)}, 800);
+            setTimeout(() => {setPageSkeleton(false)}, 100);
             return;
         }  
         setPageSkeleton(true);
@@ -74,7 +74,7 @@ const Imoveis = (props) => {
         async function getItens() {            
             const response = await getApiData('busca','','',((filtrado && filtrado != 'default') ? filtrado : ''),'finalidade=1','',pagina);
             setImoveis(response.imoveis);
-            setTimeout(() => {setPageSkeleton(false)}, 800);
+            setTimeout(() => {setPageSkeleton(false)}, 100);
         }
         getItens();
     },[filtrado]);
@@ -105,7 +105,7 @@ const Imoveis = (props) => {
                                 <b className="pr-2 pl-2 pl-md-0">{totalImoveis > 1 ? `${totalImoveis} imóveis` : `${totalImoveis} imóvel` }</b>
                             </div>
                             <div className="pt-3 pt-md-0">  
-                                <Select className="select filtro" defaultInputValue={filtrado ? filtrado : ''} onChange={(e) => setFiltrado(e.value)} name="" placeholder="FILTRAR" options={filtros} />                                
+                                <Select className="select filtro" classNamePrefix="react-select" defaultInputValue={filtrado ? filtrado : ''} onChange={(e) => setFiltrado(e.value)} name="" placeholder="FILTRAR" options={filtros} />                                
                             </div>
                         </header>
                         

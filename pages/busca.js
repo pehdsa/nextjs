@@ -6,16 +6,17 @@ import ContentHeade from './components/ContentHeader';
 import Select from 'react-select';
 import Paginate from 'react-js-pagination';
 import Skeleton from './components/Skeleton';
+import NumberFormat from 'react-number-format';
+import qs from 'qs';
 
 import { getApiData, urlImgs, moneyFormatter, titleSite, itensPorPagina } from '../utils/utils';
 
 const Imoveis = (props) => {    
-    
-    const bloco = React.createRef();
 
-    const [ pageSkeleton, setPageSkeleton ] = useState(true);
+    const [ pageSkeleton, setPageSkeleton ] = useState(true);    
+    const [ formulario, setFormulario ] = useState({ ...props.pesquisa });
     const [ pagina, setPagina ] = useState(parseInt(props.imoveis.pagina_atual));
-    const [ totalImoveis, setTotalImoveis ] = useState(props.imoveis.total_registros);
+    const [ totalImoveis, setTotalImoveis ] = useState(parseInt(props.imoveis.total_registros));
     const [ listaImoveis, setImoveis ] = useState(props.imoveis.imoveis ? props.imoveis.imoveis : []);
     const [ filtros, setFiltros ] = useState([                
         { value: 'default', label: 'FILTRAR' },
@@ -26,8 +27,10 @@ const Imoveis = (props) => {
     ]);
     const [ filtrado, setFiltrado ] = useState(props.filtro);
 
-    const ref = useRef(true);
+    let renderSkeletonList = new Array();
+    for (let i = 0; i < listaImoveis.length; i++) { renderSkeletonList[i] = i; }
 
+    const ref = useRef(true);
     useEffect(() => {
         if (ref.current) {
             ref.current = false;
@@ -38,23 +41,18 @@ const Imoveis = (props) => {
         bloco.current.scrollIntoView({block: "start", behavior: "smooth"});
         
         const novaUrl = new Array();
-        pagina && novaUrl.push(`pg=${pagina}`);
+        pagina && novaUrl.push(`&pg=${pagina}`);
         (filtrado && filtrado != 'default') && novaUrl.push(`filtro=${filtrado}`);        
-        window.history.pushState("", "", `/venda${novaUrl.length > 0 ? `?${novaUrl.join('&')}` : ''}`);
+        window.history.pushState("", "", `/busca?${qs.stringify(formulario)}${novaUrl.length > 0 ? `${novaUrl.join('&')}` : ''}`);
         
         async function getItens() {
-            const response = await getApiData('busca','','',((filtrado && filtrado != 'default') ? filtrado : ''),'finalidade=2','',pagina);
+            const response = await getApiData('busca','','',((filtrado && filtrado != 'default') ? filtrado : ''),qs.stringify(formulario),'',pagina);
             setImoveis(response.imoveis);
             setTimeout(() => {setPageSkeleton(false)}, 100);
         }
         getItens();        
         
     }, [pagina]);
-
-    let renderSkeletonList = new Array();
-    for (let i = 0; i < listaImoveis.length; i++) {
-        renderSkeletonList[i] = i;        
-    }    
 
     const refFiltro = useRef(true);
     useEffect(() => {  
@@ -66,30 +64,131 @@ const Imoveis = (props) => {
         setPageSkeleton(true);
 
         const novaUrl = new Array();
-        pagina && novaUrl.push(`pg=${pagina}`);
+        pagina && novaUrl.push(`&pg=${pagina}`);
         (filtrado && filtrado != 'default') && novaUrl.push(`filtro=${filtrado}`);        
-        window.history.pushState("", "", `/venda${novaUrl.length > 0 ? `?${novaUrl.join('&')}` : ''}`);
+        window.history.pushState("", "", `/busca?${qs.stringify(formulario)}${novaUrl.length > 0 ? `${novaUrl.join('&')}` : ''}`);
 
         async function getItens() {            
-            const response = await getApiData('busca','','',((filtrado && filtrado != 'default') ? filtrado : ''),'finalidade=2','',pagina);
+            const response = await getApiData('busca','','',((filtrado && filtrado != 'default') ? filtrado : ''),qs.stringify(formulario),'',pagina);
             setImoveis(response.imoveis);
             setTimeout(() => {setPageSkeleton(false)}, 100);
         }
         getItens();
     },[filtrado]);
 
+    /*BUSCA*/
+
+    const [ loading, setLoading ] = useState(false);    
+    const [finalidade, setFinalidade] = useState([{ value: '1', label: 'Aluguel' },{ value: '2', label: 'Venda' }]);
+    const [tipoImovel, setTipoImovel] = useState(props.infosBusca.tipoImoveis);
+    const [uf, setUf] = useState(props.infosBusca.estados);
+    const [cidade, setCidade] = useState([{ value: '', label: 'Selecione' }]);        
+    const [bairro, setBairro] = useState([{ value: '', label: 'Selecione' }]);    
+    
+    useEffect(() => {        
+        async function getcidade() {
+            setCidade([{value: '', label: 'Carregando'}]);
+            const responseCidade = await getApiData('cidades',formulario.uf);
+            setCidade(responseCidade);
+
+            if (formulario.cidade) {
+                setBairro([{value: '', label: 'Carregando'}]);
+                const responseBairro = await getApiData('bairros',formulario.cidade);
+                setBairro(responseBairro);                
+            }                   
+            
+        }
+        getcidade();
+        
+    },[uf]);    
+
+    async function handleOptionChange(tipo, valor) {
+        
+        if (tipo === 'finalidade') {
+            setFormulario({ ...formulario, finalidade: valor });
+        } else if (tipo === 'tipo') {
+            setFormulario({ ...formulario, tipo: valor });
+        } else if (tipo === 'uf') {
+            setFormulario({ ...formulario, uf: valor });
+            setCidade([{value: '', label: 'Carregando'}]);
+            const response = await getApiData('cidades',valor);
+            setCidade(response);
+        } else if (tipo === 'cidade') {
+            setFormulario({ ...formulario, cidade: valor });
+            setBairro([{value: '', label: 'Carregando'}]);
+            const response = await getApiData('bairros',valor);
+            setBairro(response);
+        } else if (tipo === 'bairro') {
+            setFormulario({ ...formulario, bairro: valor });            
+        } else if (tipo === 'valorde') {            
+            setFormulario({ ...formulario, valorde: valor.replace('R$ ','').split(',').join('') });
+        } else if (tipo === 'valorate') {
+            setFormulario({ ...formulario, valorate: valor.replace('R$ ','').split(',').join('') });                     
+        }
+    }
+
+    async function handleSubmit() {
+        setLoading(true);
+        setPageSkeleton(true)
+
+        const novaUrl = new Array();
+        pagina && novaUrl.push(`&pg=${pagina}`);
+        (filtrado && filtrado != 'default') && novaUrl.push(`filtro=${filtrado}`);        
+        window.history.pushState("", "", `/busca?${qs.stringify(formulario)}${novaUrl.length > 0 ? `${novaUrl.join('&')}` : ''}`);
+
+        const response = await getApiData('busca','','',((filtrado && filtrado != 'default') ? filtrado : ''),qs.stringify(formulario),'',pagina);
+        setImoveis(response.imoveis ? response.imoveis : []);
+        setTotalImoveis(response.imoveis ? parseInt(response.imoveis.total_registros) : 0);
+        setTimeout(() => {setPageSkeleton(false)}, 100);
+        setTimeout(() => {setLoading(false)}, 100);
+               
+    }
+
     
     return (
         <div>
             <Content dadosAnunciante={props.dadosAnunciante} telefones={props.telefones}>
-                <Head>   
-                    <meta name="metas-contato" />  
-                    <title>Venda | { titleSite }</title>
+                
+                <Head>                       
+                    <title>Resultado da Busca | { titleSite }</title>
                 </Head>
                 
-                <ContentHeade title="Imóveis para Venda" />
+                <ContentHeade title="Resultado da Busca" />
 
-                <div ref={bloco} className="container px-4 px-sm-0">
+                <div className="container px-4 px-sm-0">
+
+                    <div className="searchbox pb-2 pb-md-3">
+                        <div className="row shadow mx-0 p-4">
+                            
+                            <div className="col-3">
+                                <Select className="select" classNamePrefix="react-select" value={finalidade.find(item => item.value == formulario.finalidade)} placeholder="FINALIDADE" onChange={e => handleOptionChange('finalidade',e.value)} options={finalidade} />
+                            </div>
+                            <div className="col-3">
+                                <Select className="select" classNamePrefix="react-select" value={tipoImovel.find(item => item.value == formulario.tipo)} placeholder="TIPO IMÓVEL" onChange={e => handleOptionChange('tipo',e.value)} options={tipoImovel} />
+                            </div>
+                            <div className="col-2">
+                                <Select className="select" classNamePrefix="react-select" value={uf.find(item => item.value == formulario.uf)} placeholder="UF" onChange={e => handleOptionChange('uf',e.value)} options={uf} />
+                            </div>
+                            <div className="col-4">
+                                <Select className="select" classNamePrefix="react-select" value={cidade.find(item => item.value == formulario.cidade)} placeholder="CIDADE" onChange={e => handleOptionChange('cidade',e.value)} options={cidade} />
+                            </div>
+                            <div className="col-3 pt-3">
+                                <Select className="select" classNamePrefix="react-select" value={bairro.find(item => item.value == formulario.bairro)} placeholder="BAIRRO" onChange={e => handleOptionChange('bairro',e.value)} options={bairro} />                                        
+                            </div>
+                            <div className="col-3 pt-3">
+                                <NumberFormat className="font-14" placeholder="VALOR MÍNIMO" thousandSeparator={true} prefix={'R$ '} value={formulario.valorde} onChange={(e) => handleOptionChange('valorde',e.target.value)} />
+                            </div>
+                            <div className="col-3 pt-3">
+                                <NumberFormat className="font-14" placeholder="VALOR MÁXIMO" thousandSeparator={true} prefix={'R$ '} value={formulario.valorate} onChange={(e) => handleOptionChange('valorate',e.target.value)} />
+                            </div>
+                            <div className="col-3 pt-3">
+                                <button type="button" className="btn btn-primary font-14 w-100 py-2" onClick={() => handleSubmit()} disabled={ loading ? true : false }>
+                                    { loading && <span className="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span> }
+                                    { loading ? 'BUSCANDO' : 'BUSCAR AGORA' }
+                                </button>
+                            </div>
+                        </div>
+                    </div>
 
                     {listaImoveis.length > 0 ? (
                         <>
@@ -203,7 +302,6 @@ const Imoveis = (props) => {
                                 /> 
                             </div> 
                         ) }
-                        
 
                         </>                     
                     ) : (
@@ -212,21 +310,29 @@ const Imoveis = (props) => {
 
                 </div>
 
-            </Content>        
+            </Content>
         </div>
-    );
+    )
+
+    
 }
 
 Imoveis.getInitialProps = async ( origin ) => {   
     
+    const pesquisa = { ...origin.query } 
     const { pg } = origin.query;  
     const { filtro } = origin.query;  
 
-    const imoveis = await getApiData('busca','','',(filtro ? filtro : ''),'finalidade=2','',( pg ? pg : '1'));
+    const imoveis = await getApiData('busca','','',(filtro ? filtro : ''),qs.stringify(pesquisa),'',( pg ? pg : '1'));    
     const dadosAnunciante = await getApiData('dadosanunciante');
     const telefones = await getApiData('telefonesanunciante');
+
+    const infosBusca = {
+        tipoImoveis: await getApiData('tipoimoveis')
+        ,estados: await getApiData('estados')
+    }
     
-    return {imoveis, dadosAnunciante, telefones, filtro}; 
+    return {imoveis, dadosAnunciante, telefones, pesquisa, infosBusca}; 
     
 }
 
