@@ -3,7 +3,7 @@
 * { margin: 0;padding: 0;box-sizing: border-box;outline: 0 !important; }
 body { font-family: 'Roboto', sans-serif;font-size: 16px;font-weight: 500;background-color: var(--main-background);color: var(--main-color);-webkit-font-smoothing: antialiased !important;overflow-y: scroll;overflow-x: hidden; }
 
-.esconde { position: fixed;top: -9999px;left:0;text-ident: -99999px; }
+.esconde { position: fixed;top: -9999px;left:0;text-indent: -99999px; }
 
 .navlink { display: inline-block;font-weight: bold;color: var(--primary-color);font-size: .875rem;margin: 0 10px;white-space: nowrap; }
 .navlink:last-child { margin-right: 0 !important; }

@@ -1,12 +1,17 @@
+
+import React, { useState } from 'react';
 import Link from 'next/link'
 import Map from './Map';
 
 export default function Footer(props) {
 
+    const [ latitude, setLatitude ] = useState(props.dadosAnunciante.latitude ? props.dadosAnunciante.latitude : '');
+    const [ longitude, setLongitude ] = useState(props.dadosAnunciante.longitude ? props.dadosAnunciante.longitude : '');
+
     return (
         <footer>            
                 
-                <Map latitude={props.dadosAnunciante.latitude} longitude={props.dadosAnunciante.longitude} />                
+                <Map latitude={latitude} longitude={longitude} />                
                 
                 <div className="container footer-container d-flex flex-column">                    
                     
