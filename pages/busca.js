@@ -14,8 +14,7 @@ import { getApiData, urlImgs, moneyFormatter, titleSite, itensPorPagina } from '
 const Imoveis = (props) => {    
 
     const [ pageSkeleton, setPageSkeleton ] = useState(true);    
-    const [ formulario, setFormulario ] = useState({ ...props.pesquisa });
-    const [ pagina, setPagina ] = useState(parseInt(props.imoveis.pagina_atual));
+    const [ formulario, setFormulario ] = useState({ ...props.pesquisa });    
     const [ totalImoveis, setTotalImoveis ] = useState(parseInt(props.imoveis.total_registros));
     const [ listaImoveis, setImoveis ] = useState(props.imoveis.imoveis ? props.imoveis.imoveis : []);
     const [ filtros, setFiltros ] = useState([                
@@ -29,31 +28,7 @@ const Imoveis = (props) => {
 
     let renderSkeletonList = new Array();
     for (let i = 0; i < listaImoveis.length; i++) { renderSkeletonList[i] = i; }
-
-    const ref = useRef(true);
-    useEffect(() => {
-        if (ref.current) {
-            ref.current = false;
-            setTimeout(() => {setPageSkeleton(false)}, 100);
-            return;
-        }        
-        setPageSkeleton(true);
-        bloco.current.scrollIntoView({block: "start", behavior: "smooth"});
-        
-        const novaUrl = new Array();
-        pagina && novaUrl.push(`&pg=${pagina}`);
-        (filtrado && filtrado != 'default') && novaUrl.push(`filtro=${filtrado}`);        
-        window.history.pushState("", "", `/busca?${qs.stringify(formulario)}${novaUrl.length > 0 ? `${novaUrl.join('&')}` : ''}`);
-        
-        async function getItens() {
-            const response = await getApiData('busca','','',((filtrado && filtrado != 'default') ? filtrado : ''),qs.stringify(formulario),'',pagina);
-            setImoveis(response.imoveis);
-            setTimeout(() => {setPageSkeleton(false)}, 100);
-        }
-        getItens();        
-        
-    }, [pagina]);
-
+    
     const refFiltro = useRef(true);
     useEffect(() => {  
         if (refFiltro.current) {
@@ -61,15 +36,10 @@ const Imoveis = (props) => {
             setTimeout(() => {setPageSkeleton(false)}, 100);
             return;
         }  
-        setPageSkeleton(true);
-
-        const novaUrl = new Array();
-        pagina && novaUrl.push(`&pg=${pagina}`);
-        (filtrado && filtrado != 'default') && novaUrl.push(`filtro=${filtrado}`);        
-        window.history.pushState("", "", `/busca?${qs.stringify(formulario)}${novaUrl.length > 0 ? `${novaUrl.join('&')}` : ''}`);
-
+        setPageSkeleton(true);        
+        window.history.pushState("", "", `/busca?${qs.stringify(formulario)}${(filtrado && filtrado != 'default') ? `&filtro=${filtrado}` : ''}`);
         async function getItens() {            
-            const response = await getApiData('busca','','',((filtrado && filtrado != 'default') ? filtrado : ''),qs.stringify(formulario),'',pagina);
+            const response = await getApiData('busca','','',((filtrado && filtrado != 'default') ? filtrado : ''),qs.stringify(formulario),'','');
             setImoveis(response.imoveis);
             setTimeout(() => {setPageSkeleton(false)}, 100);
         }
@@ -95,11 +65,9 @@ const Imoveis = (props) => {
                 setBairro([{value: '', label: 'Carregando'}]);
                 const responseBairro = await getApiData('bairros',formulario.cidade);
                 setBairro(responseBairro);                
-            }                   
-            
+            }            
         }
-        getcidade();
-        
+        getcidade();        
     },[uf]);    
 
     async function handleOptionChange(tipo, valor) {
@@ -121,9 +89,9 @@ const Imoveis = (props) => {
         } else if (tipo === 'bairro') {
             setFormulario({ ...formulario, bairro: valor });            
         } else if (tipo === 'valorde') {            
-            setFormulario({ ...formulario, valorde: valor.replace('R$ ','').split(',').join('') });
+            setFormulario({ ...formulario, valorde: valor.replace('R$ ','').split('.').join('') });
         } else if (tipo === 'valorate') {
-            setFormulario({ ...formulario, valorate: valor.replace('R$ ','').split(',').join('') });                     
+            setFormulario({ ...formulario, valorate: valor.replace('R$ ','').split('.').join('') });                     
         }
     }
 
@@ -131,17 +99,16 @@ const Imoveis = (props) => {
         setLoading(true);
         setPageSkeleton(true)
 
-        const novaUrl = new Array();
-        pagina && novaUrl.push(`&pg=${pagina}`);
+        const novaUrl = new Array();        
         (filtrado && filtrado != 'default') && novaUrl.push(`filtro=${filtrado}`);        
         window.history.pushState("", "", `/busca?${qs.stringify(formulario)}${novaUrl.length > 0 ? `${novaUrl.join('&')}` : ''}`);
 
-        const response = await getApiData('busca','','',((filtrado && filtrado != 'default') ? filtrado : ''),qs.stringify(formulario),'',pagina);
+        const response = await getApiData('busca','','',((filtrado && filtrado != 'default') ? filtrado : ''),qs.stringify(formulario),'','');
         setImoveis(response.imoveis ? response.imoveis : []);
-        setTotalImoveis(response.imoveis ? parseInt(response.imoveis.total_registros) : 0);
+        setTotalImoveis(response.imoveis ? parseInt(response.total_registros) : 0);
+
         setTimeout(() => {setPageSkeleton(false)}, 100);
         setTimeout(() => {setLoading(false)}, 100);
-               
     }
 
     
@@ -153,11 +120,11 @@ const Imoveis = (props) => {
                     <title>Resultado da Busca | { titleSite }</title>
                 </Head>
                 
-                <ContentHeade title="Resultado da Busca" />
+                <ContentHeade title="Resultado da Busca" noSearch={true} />
 
                 <div className="container px-4 px-sm-0">
 
-                    <div className="searchbox pb-2 pb-md-3">
+                    <div className="searchbox mt-2 mt-md-5">
                         <div className="row shadow mx-0 p-4">
                             
                             <div className="col-3">
@@ -176,10 +143,10 @@ const Imoveis = (props) => {
                                 <Select className="select" classNamePrefix="react-select" value={bairro.find(item => item.value == formulario.bairro)} placeholder="BAIRRO" onChange={e => handleOptionChange('bairro',e.value)} options={bairro} />                                        
                             </div>
                             <div className="col-3 pt-3">
-                                <NumberFormat className="font-14" placeholder="VALOR MÍNIMO" thousandSeparator={true} prefix={'R$ '} value={formulario.valorde} onChange={(e) => handleOptionChange('valorde',e.target.value)} />
+                                <NumberFormat className="font-14" placeholder="VALOR MÍNIMO" thousandSeparator="." decimalSeparator="," allowNegative={false} prefix={'R$ '} value={formulario.valorde} onChange={(e) => handleOptionChange('valorde',e.target.value)} />
                             </div>
                             <div className="col-3 pt-3">
-                                <NumberFormat className="font-14" placeholder="VALOR MÁXIMO" thousandSeparator={true} prefix={'R$ '} value={formulario.valorate} onChange={(e) => handleOptionChange('valorate',e.target.value)} />
+                                <NumberFormat className="font-14" placeholder="VALOR MÁXIMO" thousandSeparator="." decimalSeparator="," allowNegative={false} prefix={'R$ '} value={formulario.valorate} onChange={(e) => handleOptionChange('valorate',e.target.value)} />
                             </div>
                             <div className="col-3 pt-3">
                                 <button type="button" className="btn btn-primary font-14 w-100 py-2" onClick={() => handleSubmit()} disabled={ loading ? true : false }>
@@ -290,19 +257,6 @@ const Imoveis = (props) => {
 
                         </div>
 
-                        { totalImoveis > itensPorPagina && (
-                            <div className="d-flex justify-content-center pt-2 pb-5 pagination-container">
-                                <Paginate                                     
-                                    hideFirstLastPages={true}
-                                    activePage={pagina ? pagina : 1}
-                                    itemsCountPerPage={itensPorPagina}
-                                    totalItemsCount={totalImoveis}
-                                    pageRangeDisplayed={5}
-                                    onChange={e => setPagina(e)}
-                                /> 
-                            </div> 
-                        ) }
-
                         </>                     
                     ) : (
                         <div className="text-center py-5 my-5 font-32 opacity-50">Nenhum imóvel</div>                        
@@ -319,11 +273,11 @@ const Imoveis = (props) => {
 
 Imoveis.getInitialProps = async ( origin ) => {   
     
-    const pesquisa = { ...origin.query } 
-    const { pg } = origin.query;  
     const { filtro } = origin.query;  
+    const pesquisa = { ...origin.query }    
+    delete pesquisa.filtro; 
 
-    const imoveis = await getApiData('busca','','',(filtro ? filtro : ''),qs.stringify(pesquisa),'',( pg ? pg : '1'));    
+    const imoveis = await getApiData('busca','','',(filtro ? filtro : ''),qs.stringify(pesquisa),'','');    
     const dadosAnunciante = await getApiData('dadosanunciante');
     const telefones = await getApiData('telefonesanunciante');
 
@@ -332,7 +286,7 @@ Imoveis.getInitialProps = async ( origin ) => {
         ,estados: await getApiData('estados')
     }
     
-    return {imoveis, dadosAnunciante, telefones, pesquisa, infosBusca}; 
+    return {imoveis, dadosAnunciante, telefones, pesquisa, infosBusca, filtro}; 
     
 }
 

@@ -7,7 +7,15 @@ import { getApiData } from '../../utils/utils';
 export default props => {
     
     const [ loading, setLoading ] = useState(false);
-    const [ formulario, setFormulario ] = useState({ ...props.pesquisa });    
+    const [ formulario, setFormulario ] = useState({ 
+        finalidade: '',
+        tipo: '',
+        uf: '',
+        cidade: '',
+        bairro: '',
+        valorde: '',
+        valorate: ''
+     });    
     const [finalidade, setFinalidade] = useState([
         { value: '1', label: 'Aluguel' },
         { value: '2', label: 'Venda' }
@@ -16,23 +24,6 @@ export default props => {
     const [uf, setUf] = useState(props.uf);
     const [cidade, setCidade] = useState([{ value: '', label: 'Selecione' }]);        
     const [bairro, setBairro] = useState([{ value: '', label: 'Selecione' }]);    
-    
-    useEffect(() => {        
-        async function getcidade() {
-            setCidade([{value: '', label: 'Carregando'}]);
-            const responseCidade = await getApiData('cidades',formulario.uf);
-            setCidade(responseCidade);
-
-            if (formulario.cidade) {
-                setBairro([{value: '', label: 'Carregando'}]);
-                const responseBairro = await getApiData('bairros',formulario.cidade);
-                setBairro(responseBairro);                
-            }                   
-            
-        }
-        getcidade();
-        
-    },[uf]);    
 
     async function handleOptionChange(tipo, valor) {
         
@@ -52,6 +43,10 @@ export default props => {
             setBairro(response);
         } else if (tipo === 'bairro') {
             setFormulario({ ...formulario, bairro: valor });            
+        } else if (tipo === 'valorde') {            
+            setFormulario({ ...formulario, valorde: valor.replace('R$ ','').split('.').join('') });
+        } else if (tipo === 'valorate') {
+            setFormulario({ ...formulario, valorate: valor.replace('R$ ','').split('.').join('') });                     
         }
 
     }

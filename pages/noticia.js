@@ -11,7 +11,7 @@ const Noticia = (props) => {
 
     return (
         <div>
-            <Content dadosAnunciante={props.dadosAnunciante} telefones={props.telefones}>
+            <Content dadosAnunciante={props.dadosAnunciante} telefones={props.dadosAnunciante.telefones}>
                 <Head>
                     
                     <meta property="og:url" content={`${urlSite}/imovel?id=${noticia.id}`} />
@@ -29,7 +29,7 @@ const Noticia = (props) => {
                     <title>{`${noticia.titulo}`} | Notícia | { titleSite }</title>
                 </Head>
                 
-                <ContentHeade title="Notícia" />
+                <ContentHeade title="Notícia" tipoImoveis={props.infosBusca.tipoImoveis} uf={props.infosBusca.uf} />
 
                 <div className="container noticia px-4 px-sm-0">        
 
@@ -67,18 +67,16 @@ const Noticia = (props) => {
     );
 }
 
-Noticia.getInitialProps = async ( origin ) => {           
-    
-    const { id } = origin.query;    
-    
+Noticia.getInitialProps = async ( origin ) => {
+    const { id } = origin.query;
     const noticia = await getApiData('noticia',id);
     const dadosAnunciante = await getApiData('dadosanunciante');
-    const telefones = await getApiData('telefonesanunciante');
-    
+    const infosBusca = {
+        tipoImoveis: await getApiData('tipoimoveis')
+        ,uf: await getApiData('estados') 
+    }
     const texto = <div dangerouslySetInnerHTML={{__html: noticia.texto}}></div>;
-
-    return {texto, noticia, dadosAnunciante, telefones}; 
-    
+    return {texto, noticia, dadosAnunciante, infosBusca};     
 }
 
 export default Noticia; 

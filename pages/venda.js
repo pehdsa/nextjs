@@ -81,13 +81,13 @@ const Imoveis = (props) => {
     
     return (
         <div>
-            <Content dadosAnunciante={props.dadosAnunciante} telefones={props.telefones}>
+            <Content dadosAnunciante={props.dadosAnunciante} telefones={props.dadosAnunciante.telefones}>
                 <Head>   
                     <meta name="metas-contato" />  
                     <title>Venda | { titleSite }</title>
                 </Head>
                 
-                <ContentHeade title="Imóveis para Venda" />
+                <ContentHeade title="Imóveis para Venda" tipoImoveis={props.infosBusca.tipoImoveis} uf={props.infosBusca.uf} />
 
                 <div ref={bloco} className="container px-4 px-sm-0">
 
@@ -223,10 +223,14 @@ Imoveis.getInitialProps = async ( origin ) => {
     const { filtro } = origin.query;  
 
     const imoveis = await getApiData('busca','','',(filtro ? filtro : ''),'finalidade=2','',( pg ? pg : '1'));
-    const dadosAnunciante = await getApiData('dadosanunciante');
-    const telefones = await getApiData('telefonesanunciante');
+    const dadosAnunciante = await getApiData('dadosanunciante');    
+
+    const infosBusca = {
+        tipoImoveis: await getApiData('tipoimoveis')
+        ,uf: await getApiData('estados')
+    }
     
-    return {imoveis, dadosAnunciante, telefones, filtro}; 
+    return {imoveis, dadosAnunciante, filtro, infosBusca}; 
     
 }
 

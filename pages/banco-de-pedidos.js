@@ -85,13 +85,13 @@ const BancoPedidos = (props) => {
 
     return (
         <div>
-            <Content dadosAnunciante={props.dadosAnunciante} telefones={props.telefones}>
+            <Content dadosAnunciante={props.dadosAnunciante} telefones={props.dadosAnunciante.telefones}>
                 <Head>   
                     <meta name="metas-contato" /> 
                     <title>Banco de Pedidos | { titleSite }</title>
                 </Head>
                 
-                <ContentHeade title="Banco de Pedidos" />
+                <ContentHeade title="Banco de Pedidos" tipoImoveis={props.infosBusca.tipoImoveis} uf={props.infosBusca.uf} />
 
                 <div className="container py-5 font-14 px-4 px-sm-0">
                     <p>Preencha o formulário abaixo e solicite o imóvel que tanto deseja, descreva as principais características, que iremos procurar para você!</p>
@@ -156,11 +156,11 @@ const BancoPedidos = (props) => {
                                             </div>
                                             
                                             <div className="col-12 col-md-6 pb-2 mb-1 px-0">
-                                                <NumberFormat placeholder="VALOR MÍNIMO" thousandSeparator={true} prefix={'R$ '} value={formulario.min} onChange={(e) => handleForm({ min: e.target.value })} />
+                                                <NumberFormat placeholder="VALOR MÍNIMO" thousandSeparator="." decimalSeparator="," allowNegative={false} prefix={'R$ '} value={formulario.min} onChange={(e) => handleForm({ min: e.target.value })} />
                                             </div>
 
                                             <div className="col-12 col-md-6 pb-2 mb-1 px-0">
-                                                <NumberFormat placeholder="VALOR MÁXIMO" thousandSeparator={true} prefix={'R$ '} value={formulario.max} onChange={(e) => handleForm({ max: e.target.value })} />
+                                                <NumberFormat placeholder="VALOR MÁXIMO" thousandSeparator="." decimalSeparator="," allowNegative={false} prefix={'R$ '} value={formulario.max} onChange={(e) => handleForm({ max: e.target.value })} />
                                             </div>
                                             
 
@@ -193,13 +193,13 @@ const BancoPedidos = (props) => {
     );
 }
 
-BancoPedidos.getInitialProps = async () => {   
-    
-    const dadosAnunciante = await getApiData('dadosanunciante');
-    const telefones = await getApiData('telefonesanunciante');
-    
-    return {dadosAnunciante, telefones}; 
-    
+BancoPedidos.getInitialProps = async () => {       
+    const dadosAnunciante = await getApiData('dadosanunciante');        
+    const infosBusca = {
+        tipoImoveis: await getApiData('tipoimoveis')
+        ,uf: await getApiData('estados')
+    }
+    return {dadosAnunciante, infosBusca};     
 }
 
 export default BancoPedidos; 

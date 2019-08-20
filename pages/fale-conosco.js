@@ -67,13 +67,13 @@ const FaleConosco = (props) => {
 
     return (
         <div>
-            <Content dadosAnunciante={props.dadosAnunciante} telefones={props.telefones}>
+            <Content dadosAnunciante={props.dadosAnunciante} telefones={props.dadosAnunciante.telefones}>
                 <Head>   
                     <meta name="metas-contato" />
                     <title>Fale Conosco | { titleSite }</title>
                 </Head>
                 
-                <ContentHeade title="Fale Conosco" />
+                <ContentHeade title="Fale Conosco" tipoImoveis={props.infosBusca.tipoImoveis} uf={props.infosBusca.uf} />
 
                 <div className="container py-5 font-14">
                     
@@ -131,13 +131,13 @@ const FaleConosco = (props) => {
     );
 }
 
-FaleConosco.getInitialProps = async () => {   
-    
+FaleConosco.getInitialProps = async () => {       
     const dadosAnunciante = await getApiData('dadosanunciante');
-    const telefones = await getApiData('telefonesanunciante');
-    
-    return {dadosAnunciante, telefones}; 
-    
+    const infosBusca = {
+        tipoImoveis: await getApiData('tipoimoveis')
+        ,uf: await getApiData('estados')
+    }
+    return {dadosAnunciante, infosBusca};     
 }
 
 export default FaleConosco; 

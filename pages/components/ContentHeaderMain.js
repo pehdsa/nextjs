@@ -3,6 +3,7 @@ import Select from 'react-select';
 import Slider from 'rc-slider';
 const Range = Slider.Range;
 import Router from 'next/router';
+import NumberFormat from 'react-number-format';
 
 import { getApiData, moneyFormatter } from '../../utils/utils';
 
@@ -126,12 +127,18 @@ export default props => {
                                     
                                     <div className={ finalidadeSelecionada === '1' ? 'd-block' : 'd-none' }>
                                         <Range allowCross={false} step={100} defaultValue={[minAluguel, maxAluguel]} min={minAluguel} max={maxAluguel} onChange={e => setValuesAluguel({min: e[0], max: e[1]})} />
-                                        <div className="d-flex justify-content-between font-12 color-5f5 pt-3 pb-1 text-center"><b><span className="color-active">R$ {moneyFormatter(valuesAluguel.min)}</span></b> <b><span className="color-active">R$ {moneyFormatter(valuesAluguel.max)}</span></b></div>
+                                        <div className="d-flex justify-content-between font-12 color-5f5 pt-3 pb-1 text-center">
+                                            <NumberFormat disabled className="bg-transparent font-12 d-inline-block border-0 p-0 m-0 font-weight-bolder color-active" thousandSeparator="." decimalSeparator="," allowNegative={false} prefix={'R$ '} value={valuesAluguel.min} />
+                                            <NumberFormat disabled className="bg-transparent text-right font-12 d-inline-block border-0 p-0 m-0 font-weight-bolder color-active" thousandSeparator="." decimalSeparator="," allowNegative={false} prefix={'R$ '} value={valuesAluguel.max} />                                            
+                                        </div>  
                                     </div>
 
                                     <div className={ finalidadeSelecionada === '2' ? 'd-block' : 'd-none' }>
                                         <Range allowCross={false} step={20000} defaultValue={[minVenda, maxVenda]} min={minVenda} max={maxVenda} onChange={e => setValuesVenda({min: e[0], max: e[1]})} />
-                                        <div className="d-flex justify-content-between font-12 color-5f5 pt-3 pb-1 text-center"><b><span className="color-active">R$ {moneyFormatter(valuesVenda.min)}</span></b> <b><span className="color-active">R$ {moneyFormatter(valuesVenda.max)}</span></b></div>
+                                        <div className="d-flex justify-content-between font-12 color-5f5 pt-3 pb-1 text-center">
+                                            <NumberFormat disabled className="bg-transparent font-12 d-inline-block border-0 p-0 m-0 font-weight-bolder color-active" thousandSeparator="." decimalSeparator="," allowNegative={false} prefix={'R$ '} value={valuesVenda.min} />
+                                            <NumberFormat disabled className="bg-transparent text-right font-12 d-inline-block border-0 p-0 m-0 font-weight-bolder color-active" thousandSeparator="." decimalSeparator="," allowNegative={false} prefix={'R$ '} value={valuesVenda.max} />                                            
+                                        </div>
                                     </div>                                    
 
                                 </div>                               

@@ -108,7 +108,7 @@ const Imovel = (props) => {
     
     return (
         <div>
-            <Content dadosAnunciante={props.dadosAnunciante} telefones={props.telefones}>
+            <Content dadosAnunciante={props.dadosAnunciante} telefones={props.dadosAnunciante.telefones}>
                 <Head>                       
                     
                     <meta property="og:url" content={`${urlSite}/imovel?id=${imovel.id}`} />
@@ -124,7 +124,7 @@ const Imovel = (props) => {
                     <title>{`${imovel.titulo} | ${imovel.tipo} | ${imovel.finalidade}`} | Imóvel | { titleSite }</title>
                 </Head>
                 
-                <ContentHeade title="Imóvel" />
+                <ContentHeade title="Imóvel" tipoImoveis={props.infosBusca.tipoImoveis} uf={props.infosBusca.uf} />
 
                 <div className="container visualizacao px-4 px-sm-0">        
                     
@@ -149,7 +149,7 @@ const Imovel = (props) => {
                                 <a href={`https://wa.me/?text=${urlSite}/imovel?id=${imovel.id}`} className="whatsapp mx-0" target="_blank" rel="nofollow">Whatsapp</a>
                             </div>
                             
-                            { imovel.imagens ? <ImageGallery lazyLoad={true} showFullscreenButton={false} items={images} /> : <div><img src="/static/img/sm-foto.jpg" /></div> }
+                            { imovel.imagens ? <ImageGallery lazyLoad={true} showFullscreenButton={true} items={images} /> : <div><img src="/static/img/sm-foto.jpg" /></div> }
 
                             <div className="pt-3 pb-4 d-block d-lg-none">                                
 
@@ -363,16 +363,15 @@ const Imovel = (props) => {
     );
 }
 
-Imovel.getInitialProps = async ( origin ) => {           
-    
+Imovel.getInitialProps = async ( origin ) => {
     const { id } = origin.query;    
-    
     const imovel = await getApiData('dadosimovel',id);
-    const dadosAnunciante = await getApiData('dadosanunciante');
-    const telefones = await getApiData('telefonesanunciante');
-    
-    return {imovel, dadosAnunciante, telefones}; 
-    
+    const dadosAnunciante = await getApiData('dadosanunciante');    
+    const infosBusca = {
+        tipoImoveis: await getApiData('tipoimoveis')
+        ,uf: await getApiData('estados')
+    }
+    return {imovel, dadosAnunciante, infosBusca};     
 }
 
 export default Imovel; 
