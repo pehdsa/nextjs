@@ -1,9 +1,8 @@
+import React from 'react'; 
 import Link from './NavLink';
 
 export default function Header(props) {    
-
     
-
     return (
         <header className="d-flex align-items-center header">
             <div className="container d-flex flex-column flex-md-row align-items-center pt-1 pb-4 pt-md-0 pb-md-0">

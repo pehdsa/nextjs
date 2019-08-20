@@ -26,8 +26,8 @@ const getApiData = async ( acao, registro="", resultados="", ordenacao="", busca
     }
 
     const myHeaders = new Headers({
-        "Content-Type": "application/x-www-form-urlencoded", 
-        "Access-Control-Allow-Origin": "*"
+        'Content-Type': 'application/x-www-form-urlencoded', 
+        'Access-Control-Allow-Origin': '*'        
     });
 
     const options = { 

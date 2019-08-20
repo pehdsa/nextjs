@@ -105,6 +105,7 @@ textarea { -webkit-appearance: none;-moz-appearance: none;appearance: none;paddi
 .shadow { box-shadow: var(--shadow) !important; }
 a.shadow { transition: box-shadow .3s ease; }
 a.shadow:hover { box-shadow: var(--shadow-hover) !important; }
+a.shadow:active { box-shadow: var(--shadow) !important; }
 
 .shadow-sm { box-shadow: var(--shadow-sm) !important; }
 

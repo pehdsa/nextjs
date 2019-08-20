@@ -97,12 +97,8 @@ const Imoveis = (props) => {
 
     async function handleSubmit() {
         setLoading(true);
-        setPageSkeleton(true)
-
-        const novaUrl = new Array();        
-        (filtrado && filtrado != 'default') && novaUrl.push(`filtro=${filtrado}`);        
-        window.history.pushState("", "", `/busca?${qs.stringify(formulario)}${novaUrl.length > 0 ? `${novaUrl.join('&')}` : ''}`);
-
+        setPageSkeleton(true);
+        window.history.pushState("", "", `/busca?${qs.stringify(formulario)}${(filtrado && filtrado != 'default') ? `&filtro=${filtrado}` : ''}`);
         const response = await getApiData('busca','','',((filtrado && filtrado != 'default') ? filtrado : ''),qs.stringify(formulario),'','');
         setImoveis(response.imoveis ? response.imoveis : []);
         setTotalImoveis(response.imoveis ? parseInt(response.total_registros) : 0);
@@ -114,17 +110,17 @@ const Imoveis = (props) => {
     
     return (
         <div>
-            <Content dadosAnunciante={props.dadosAnunciante} telefones={props.telefones}>
+            <Content dadosAnunciante={props.dadosAnunciante} telefones={props.dadosAnunciante.telefones}>
                 
                 <Head>                       
                     <title>Resultado da Busca | { titleSite }</title>
                 </Head>
                 
-                <ContentHeade title="Resultado da Busca" noSearch={true} />
+                <ContentHeade title="Resultado da Busca" noSearch={true} tipoImoveis={props.infosBusca.tipoImoveis} uf={props.infosBusca.estados} />
 
                 <div className="container px-4 px-sm-0">
 
-                    <div className="searchbox mt-2 mt-md-5">
+                    <div className="d-none d-md-block searchbox mt-2 mt-md-5">
                         <div className="row shadow mx-0 p-4">
                             
                             <div className="col-3">
@@ -278,15 +274,14 @@ Imoveis.getInitialProps = async ( origin ) => {
     delete pesquisa.filtro; 
 
     const imoveis = await getApiData('busca','','',(filtro ? filtro : ''),qs.stringify(pesquisa),'','');    
-    const dadosAnunciante = await getApiData('dadosanunciante');
-    const telefones = await getApiData('telefonesanunciante');
+    const dadosAnunciante = await getApiData('dadosanunciante');    
 
     const infosBusca = {
         tipoImoveis: await getApiData('tipoimoveis')
         ,estados: await getApiData('estados')
     }
     
-    return {imoveis, dadosAnunciante, telefones, pesquisa, infosBusca, filtro}; 
+    return {imoveis, dadosAnunciante, pesquisa, infosBusca, filtro}; 
     
 }
 

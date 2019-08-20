@@ -86,8 +86,7 @@ const BancoPedidos = (props) => {
     return (
         <div>
             <Content dadosAnunciante={props.dadosAnunciante} telefones={props.dadosAnunciante.telefones}>
-                <Head>   
-                    <meta name="metas-contato" /> 
+                <Head>                       
                     <title>Banco de Pedidos | { titleSite }</title>
                 </Head>
                 

@@ -83,8 +83,7 @@ const Imoveis = (props) => {
     return (
         <div>
             <Content dadosAnunciante={props.dadosAnunciante} telefones={props.dadosAnunciante.telefones}>
-                <Head>   
-                    <meta name="metas-contato" />  
+                <Head>                       
                     <title>Aluguel | { titleSite }</title>
                 </Head>
                 

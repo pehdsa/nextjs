@@ -59,7 +59,7 @@ export default props => {
         <header className="content-header">        
             <div className="d-flex align-items-center justify-content-between container py-4">
                 <h1 className="font-24 font-md-28 text-white text-center text-md-left m-0">{props.title}</h1> 
-                <button onClick={handleShow} className={`p-1 m-0 bg-transparent border-0${props.noSearch ? ' d-none' : ''}`}><img src="/static/img/search.svg" width="25" height="25" /></button>
+                <button onClick={handleShow} className={`p-1 m-0 bg-transparent border-0${props.noSearch ? ' d-block d-md-none' : ''}`}><img src="/static/img/search.svg" width="25" height="25" /></button>
             </div>                
         </header>
 
@@ -98,7 +98,7 @@ export default props => {
 
                 </div>
                 
-                <button type="button" className="btn btn-primary font-14 w-100 px-4 py-3" onClick={() => handleSubmit()} disabled={ loading ? true : false }>
+                <button type="button" className="btn btn-primary font-14 w-100 px-4 py-3 shadow" onClick={() => handleSubmit()} disabled={ loading ? true : false }>
                     { loading && <span className="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span> }
                     { loading ? 'BUSCANDO' : 'BUSCAR AGORA' }
                 </button>   

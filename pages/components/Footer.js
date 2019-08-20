@@ -2,9 +2,8 @@ import Link from 'next/link'
 import Map from './Map';
 
 export default function Footer(props) {
+
     return (
-        
-        
         <footer>            
                 
                 <Map latitude={props.dadosAnunciante.latitude} longitude={props.dadosAnunciante.longitude} />                

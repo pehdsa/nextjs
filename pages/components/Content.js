@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import Head from 'next/head'
 import Header from './Header'
 import Footer from './Footer'
@@ -7,7 +8,7 @@ import { ToastContainer } from 'react-toastify';
 
 import { titleSite } from '../../utils/utils';
 
-const Content = (props) => {    
+const Content = (props) => {
 
     return (
         <div className="root">
@@ -20,7 +21,7 @@ const Content = (props) => {
                 <meta property="og:site_name" content={titleSite} />
             </Head>
             
-            <Header dadosAnunciante={props.dadosAnunciante} telefones={props.telefones} />            
+            <Header  dadosAnunciante={props.dadosAnunciante} telefones={props.telefones} />            
             
             <main>{props.children}</main>
             
