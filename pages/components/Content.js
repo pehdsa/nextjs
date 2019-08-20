@@ -21,7 +21,7 @@ const Content = (props) => {
                 <meta property="og:site_name" content={titleSite} />
             </Head>
             
-            <Header  dadosAnunciante={props.dadosAnunciante} telefones={props.telefones} />            
+            <Header dadosAnunciante={props.dadosAnunciante} telefones={props.dadosAnunciante.telefones} />            
             
             <main>{props.children}</main>
             

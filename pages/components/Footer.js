@@ -5,8 +5,8 @@ import Map from './Map';
 
 export default function Footer(props) {
 
-    const [ latitude, setLatitude ] = useState(props.dadosAnunciante.latitude ? props.dadosAnunciante.latitude : '');
-    const [ longitude, setLongitude ] = useState(props.dadosAnunciante.longitude ? props.dadosAnunciante.longitude : '');
+    const [ latitude, setLatitude ] = useState(props.dadosAnunciante.latitude ? props.dadosAnunciante.latitude : '0');
+    const [ longitude, setLongitude ] = useState(props.dadosAnunciante.longitude ? props.dadosAnunciante.longitude : '0'); 
 
     return (
         <footer>            
